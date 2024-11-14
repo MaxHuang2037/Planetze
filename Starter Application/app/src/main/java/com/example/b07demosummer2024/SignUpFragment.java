@@ -1,4 +1,4 @@
-package com.example.planetze2024;
+package com.example.b07demosummer2024;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,10 +21,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.concurrent.Executor;
-
 public class SignUpFragment extends Fragment {
     private EditText email, password, confirmPassword;
+    private TextView logInRedirect;
 
     private Button signUpButton, backButton;
 
@@ -33,12 +34,15 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sign_up_fragment, container, false);
+        // Check if user is signed in (non-null) and update UI accordingly.
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         email = view.findViewById(R.id.editTextTextEmailAddress);
         password = view.findViewById(R.id.editTextTextPassword);
         confirmPassword = view.findViewById(R.id.editTextTextConfirmPassword);
         signUpButton = view.findViewById(R.id.signUpButton);
-
+        logInRedirect = view.findViewById((R.id.logInRedirect));
 
 //        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
 
@@ -48,6 +52,13 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 signUp();
+            }
+        });
+
+        logInRedirect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new LogInFragment());
             }
         });
 
@@ -67,6 +78,8 @@ public class SignUpFragment extends Fragment {
             Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        createAccount(e, p);
     }
     private void createAccount(String email, String password) {
         // [START create_user_with_email]
@@ -87,5 +100,11 @@ public class SignUpFragment extends Fragment {
                     }
                 });
         // [END create_user_with_email]
+    }
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

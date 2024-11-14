@@ -1,4 +1,4 @@
-package com.example.planetze2024;
+package com.example.b07demosummer2024;
 
 import android.view.LayoutInflater;
 import android.view.View;
