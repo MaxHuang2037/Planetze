@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D8DBE2"
+    android:visibility="visible"
+    tools:context=".AddItemFragment">
+
+    <EditText
+        android:id="@+id/editTextTextPassword"
+        android:layout_width="210dp"
+        android:layout_height="40dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="304dp" />
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddress"
+        android:layout_width="210dp"
+        android:layout_height="40dp"
+        android:background="#FBFBFB"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="240dp" />
+
+    <Button
+        android:id="@+id/logInButton"
+        android:layout_width="199dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="105dp"
+        android:text="Log In"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="446dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="201dp"
+        android:layout_height="53dp"
+        android:fontFamily="@font/archivo_black"
+        android:text="Log In"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="35dp"
+        tools:layout_editor_absoluteX="103dp"
+        tools:layout_editor_absoluteY="172dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="327dp"
+        android:layout_height="134dp"
+        android:src="@drawable/a0221f64e0a0e6be160afaee008334df"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="29dp" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="104dp"
+        android:layout_height="54dp"
+        android:text="Back"
+        android:textSize="15dp"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="639dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
