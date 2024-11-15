@@ -25,77 +25,52 @@ public class HomeFragment extends Fragment {
     private FirebaseDatabase db;
     private DatabaseReference userRef;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
-        Button buttonRecyclerView = view.findViewById(R.id.buttonRecyclerView);
-        Button buttonScroller = view.findViewById(R.id.buttonScroller);
-        Button buttonSpinner = view.findViewById(R.id.buttonSpinner);
-        Button buttonManageItems = view.findViewById(R.id.buttonManageItems);
+        Button loginButton = view.findViewById(R.id.loginButton);
+        Button signupButton = view.findViewById(R.id.signupButton);
 
         // for testing
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
-            loadFragment(new LogInFragment());
-        }
-        Button logOut = view.findViewById(R.id.logOutButton);
+
 //         Read from the database
-        String UID = mAuth.getCurrentUser().getUid();
-        db = FirebaseDatabase.getInstance("https://planetze-b3ad9-default-rtdb.firebaseio.com/");
-        userRef = db.getReference("users/" + UID);
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, "Value is: " + value);
-            }
+//        String UID = mAuth.getCurrentUser().getUid();
+//        db = FirebaseDatabase.getInstance("https://planetze-b3ad9-default-rtdb.firebaseio.com/");
+//        userRef = db.getReference("users/" + UID);
+//        userRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                String value = dataSnapshot.getValue(String.class);
+//                Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
+////                Log.d(TAG, "Value is: " + value);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                // Failed to read value
+//                Toast.makeText(getContext(), "failed to read value", Toast.LENGTH_SHORT).show();
+////                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Failed to read value
-                Toast.makeText(getContext(), "failed to read value", Toast.LENGTH_SHORT).show();
-//                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
-        buttonRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new RecyclerViewFragment());
-            }
-        });
-
-        buttonScroller.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new ScrollerFragment());
-            }
-        });
-
-        buttonSpinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new SpinnerFragment());
-            }
-        });
-
-        buttonManageItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { loadFragment(new ManageItemsFragment());}
-        });
-
-
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
                 loadFragment(new LogInFragment());
+            }
+        });
+
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new SignUpFragment());
             }
         });
 

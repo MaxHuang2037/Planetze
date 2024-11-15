@@ -38,7 +38,8 @@ public class LogInFragment extends Fragment {
         email = view.findViewById(R.id.editTextTextEmailAddress);
         password = view.findViewById(R.id.editTextTextPassword);
         loginButton = view.findViewById(R.id.logInButton);
-        signUpRedirect = view.findViewById((R.id.signUpRedirect));
+        signUpRedirect = view.findViewById(R.id.signUpRedirect);
+        backButton = view.findViewById(R.id.backButton);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -60,6 +61,13 @@ public class LogInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 loadFragment(new SignUpFragment());
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new HomeFragment());
             }
         });
 

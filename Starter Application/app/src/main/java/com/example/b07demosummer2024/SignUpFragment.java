@@ -56,7 +56,8 @@ public class SignUpFragment extends Fragment {
         password = view.findViewById(R.id.editTextTextPassword);
         confirmPassword = view.findViewById(R.id.editTextTextConfirmPassword);
         signUpButton = view.findViewById(R.id.signUpButton);
-        logInRedirect = view.findViewById((R.id.logInRedirect));
+        logInRedirect = view.findViewById(R.id.logInRedirect);
+        backButton = view.findViewById(R.id.backButton);
 
 //        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
 
@@ -73,6 +74,13 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 loadFragment(new LogInFragment());
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new HomeFragment());
             }
         });
 
