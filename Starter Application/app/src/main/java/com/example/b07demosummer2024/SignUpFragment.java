@@ -20,14 +20,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpFragment extends Fragment {
-    private EditText email, password, confirmPassword;
+    private EditText name, email, password, confirmPassword;
     private TextView logInRedirect;
 
     private Button signUpButton, backButton;
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase db;
+    private DatabaseReference userRef;
     private static final String TAG = "EmailPassword";
 
     @Nullable
@@ -38,6 +45,13 @@ public class SignUpFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        if(currentUser != null){
+            loadFragment(new HomeFragment());
+        } else {
+            Toast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT).show();
+        }
+
+        name = view.findViewById((R.id.editTextTextName));
         email = view.findViewById(R.id.editTextTextEmailAddress);
         password = view.findViewById(R.id.editTextTextPassword);
         confirmPassword = view.findViewById(R.id.editTextTextConfirmPassword);
@@ -66,11 +80,12 @@ public class SignUpFragment extends Fragment {
     }
 
     private void signUp(){
+        String n = name.getText().toString().trim();
         String e = email.getText().toString().trim();
         String p = password.getText().toString().trim();
         String cp = confirmPassword.getText().toString().trim();
 
-        if (e.isEmpty() || p.isEmpty() || cp.isEmpty()) {
+        if (n.isEmpty() || e.isEmpty() || p.isEmpty() || cp.isEmpty()) {
             Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -79,9 +94,9 @@ public class SignUpFragment extends Fragment {
             return;
         }
 
-        createAccount(e, p);
+        createAccount(n, e, p);
     }
-    private void createAccount(String email, String password) {
+    private void createAccount(String name, String email, String password) {
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -90,7 +105,17 @@ public class SignUpFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            String UID = mAuth.getCurrentUser().getUid();
+                            db = FirebaseDatabase.getInstance("https://planetze-b3ad9-default-rtdb.firebaseio.com/");
+                            userRef = db.getReference("users/" + UID);
+                            String id = userRef.push().getKey();
+                            // user schema
+                            User user = new User(UID, name, email, true);
+
+                            userRef.child(id).setValue(user);
+
+                            Toast.makeText(getContext(), "Account created.",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
