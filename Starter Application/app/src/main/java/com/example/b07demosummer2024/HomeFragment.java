@@ -90,6 +90,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) { loadFragment(new ManageItemsFragment());}
         });
 
+
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
