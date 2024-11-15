@@ -46,9 +46,7 @@ public class SignUpFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser != null){
-            loadFragment(new HomeFragment());
-        } else {
-            Toast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT).show();
+            // redirect to main page
         }
 
         name = view.findViewById((R.id.editTextTextName));
@@ -124,6 +122,7 @@ public class SignUpFragment extends Fragment {
 
                             Toast.makeText(getContext(), "Account created.",
                                     Toast.LENGTH_SHORT).show();
+                            loadFragment(new LogInFragment());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
 
         // for testing
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
 
 //         Read from the database
 //        String UID = mAuth.getCurrentUser().getUid();
@@ -73,7 +73,6 @@ public class HomeFragment extends Fragment {
                 loadFragment(new SignUpFragment());
             }
         });
-
 
         return view;
     }
