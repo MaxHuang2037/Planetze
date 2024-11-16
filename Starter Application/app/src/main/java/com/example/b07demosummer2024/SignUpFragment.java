@@ -112,9 +112,10 @@ public class SignUpFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             String UID = mAuth.getCurrentUser().getUid();
-                            db = FirebaseDatabase.getInstance("https://planetze-b3ad9-default-rtdb.firebaseio.com/");
+                            db = FirebaseDatabase.getInstance();
                             userRef = db.getReference("users/" + UID);
                             String id = userRef.push().getKey();
+
                             // user schema
                             User user = new User(UID, name, email, true);
 
