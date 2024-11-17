@@ -94,7 +94,6 @@ public class LogInFragment extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(getContext(), "LOGGED IN.",
                                 Toast.LENGTH_SHORT).show();
-                        // redirect to home page here
 
                     } else {
                         // If sign in fails, display a message to the user.
