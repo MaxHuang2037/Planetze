@@ -13,6 +13,14 @@
     <string name="planetze_logo">planetze logo</string>
     <string name="sign_up">Sign Up</string>
     <string name="login">Login</string>
+    <string name="dashboard_welcome">Welcome, {{ username }}</string>
+    <string name="image_description">planetze logo</string>
+    <string name="eco_tracker">Eco Tracker</string>
+    <string name="logout">Logout</string>
+    <string name="eco_agent">Eco Agent</string>
+    <string name="eco_hub">Eco Hub</string>
+    <string name="eco_balance">Eco Balance</string>
+    <string name="eco_gauge">Eco Gauge</string>
 
     <string-array name="categories_array">
         <item>Books</item>
