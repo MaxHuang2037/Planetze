@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LogInFragment extends Fragment {
     private EditText email, password;
-    private TextView signUpRedirect;
+    private TextView signUpRedirect, forgotPasswordButton;
 
     private Button loginButton, backButton;
     private FirebaseAuth mAuth;
@@ -40,6 +40,7 @@ public class LogInFragment extends Fragment {
         loginButton = view.findViewById(R.id.logInButton);
         signUpRedirect = view.findViewById(R.id.signUpRedirect);
         backButton = view.findViewById(R.id.backButton);
+        forgotPasswordButton = view.findViewById(R.id.forgotPasswordButton);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -69,6 +70,13 @@ public class LogInFragment extends Fragment {
             }
         });
 
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new ForgotPasswordActivity());
+            }
+        });
+
         return view;
     }
 
@@ -94,7 +102,7 @@ public class LogInFragment extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(getContext(), "LOGGED IN.",
                                 Toast.LENGTH_SHORT).show();
-
+                        loadFragment(new DashboardFragment());
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
