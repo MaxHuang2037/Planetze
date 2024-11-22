@@ -102,7 +102,7 @@ public class LogInFragment extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(getContext(), "LOGGED IN.",
                                 Toast.LENGTH_SHORT).show();
-
+                        loadFragment(new DashboardFragment());
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());

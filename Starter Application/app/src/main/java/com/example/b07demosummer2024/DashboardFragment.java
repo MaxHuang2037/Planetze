@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,25 +21,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomeFragment extends Fragment {
+public class DashboardFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference userRef;
 
+    private TextView welcome_message;
+    private Button eco_tracker_button, eco_gauge_button, logout_button;
+
     private User user;
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
+        View view = inflater.inflate(R.layout.activity_dashboard, container, false);
 
-        Button loginButton = view.findViewById(R.id.loginButton);
-        Button signupButton = view.findViewById(R.id.signupButton);
-
-        // for testing
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        welcome_message = view.findViewById(R.id.welcome_message);
+        eco_tracker_button = view.findViewById(R.id.eco_gauge_button);
+        eco_gauge_button = view.findViewById(R.id.eco_gauge_button);
+        logout_button = view.findViewById(R.id.logout_button);
+
+
+
         if(currentUser != null){
             //Read from the database
             String UID = mAuth.getCurrentUser().getUid();
@@ -52,6 +58,7 @@ public class HomeFragment extends Fragment {
                         if(u.getId().equals(UID)){
                             user = u;
                             Toast.makeText(getContext(), "WELCOME " + user.getName(), Toast.LENGTH_SHORT).show();
+                            welcome_message.setText("Welcome " + user.getName());
                         }
                     }
 //                Log.d(TAG, "Value is: " + value);
@@ -60,23 +67,31 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     // Failed to read value
-                    Toast.makeText(getContext(), "failed to read value", Toast.LENGTH_SHORT).show();
-//                Log.w(TAG, "Failed to read value.", error.toException());
                 }
             });
+        } else {
+            loadFragment(new HomeFragment());
         }
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new LogInFragment());
+                FirebaseAuth.getInstance().signOut();
+                loadFragment(new HomeFragment());
             }
         });
 
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        eco_tracker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new SignUpFragment());
+
+            }
+        });
+
+        eco_gauge_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new EcoGaugeFragement());
             }
         });
 
