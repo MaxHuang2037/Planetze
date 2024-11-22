@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ public class EcoGaugeFragement extends Fragment{
         Spinner timeRange = view.findViewById(R.id.timeRange);
 //        BarChart emmisionsBreakdown = view.findViewById(R.id.emmisionsBreakdown);
         LineChart emmisionsTrend = (LineChart) view.findViewById(R.id.emmisionsTrendGraph);
+        Button backButton = view.findViewById(R.id.backButton);
 
         LineDataSet lineDataSet = new LineDataSet(eBValues(), "emmisionsTrend");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
@@ -44,6 +46,13 @@ public class EcoGaugeFragement extends Fragment{
                 R.array.date_range_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeRange.setAdapter(adapter);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new DashboardFragment());
+            }
+        });
 
         return view;
     }

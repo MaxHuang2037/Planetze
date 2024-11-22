@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,6 +32,7 @@ public class ForgotPasswordActivity extends Fragment {
         Button buttonResendLink = view.findViewById(R.id.btnSendResetLink);
         EditText editTextEmail = view.findViewById(R.id.editTextEmail);
         TextView tvForgotPasswordTitle = view.findViewById(R.id.tvForgotPasswordTitle);
+        Button backButton = view.findViewById(R.id.backButton);
 
         // Set OnClickListener for the "Send Reset Link" button
         buttonResendLink.setOnClickListener(v -> {
@@ -44,17 +46,30 @@ public class ForgotPasswordActivity extends Fragment {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new LogInFragment());
+            }
+        });
+
         return view;
     }
 
     private void sendResetLink(String email) {
         mAuth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Password reset email sent to: " + email, Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getContext(), "Failed to send reset email: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Password reset email sent to: " + email, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "Failed to send reset email: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+    }
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
