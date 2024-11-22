@@ -25,6 +25,8 @@ public class HomeFragment extends Fragment {
     private FirebaseDatabase db;
     private DatabaseReference userRef;
 
+    private User user;
+
 
     @Nullable
     @Override
@@ -36,29 +38,33 @@ public class HomeFragment extends Fragment {
 
         // for testing
         mAuth = FirebaseAuth.getInstance();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            //Read from the database
+            String UID = mAuth.getCurrentUser().getUid();
+            db = FirebaseDatabase.getInstance();
+            userRef = db.getReference("users");
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        User u = snapshot.getValue(User.class);
+                        if(u.getId().equals(UID)){
+                            user = u;
+                            Toast.makeText(getContext(), "WELCOME " + user.getName(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+//                Log.d(TAG, "Value is: " + value);
+                }
 
-//         Read from the database
-//        String UID = mAuth.getCurrentUser().getUid();
-//        db = FirebaseDatabase.getInstance("https://planetze-b3ad9-default-rtdb.firebaseio.com/");
-//        userRef = db.getReference("users/" + UID);
-//        userRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-//                Toast.makeText(getContext(), value, Toast.LENGTH_SHORT).show();
-////                Log.d(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                // Failed to read value
-//                Toast.makeText(getContext(), "failed to read value", Toast.LENGTH_SHORT).show();
-////                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Failed to read value
+                    Toast.makeText(getContext(), "failed to read value", Toast.LENGTH_SHORT).show();
+//                Log.w(TAG, "Failed to read value.", error.toException());
+                }
+            });
+        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

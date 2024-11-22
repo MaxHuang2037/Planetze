@@ -114,7 +114,7 @@ public class SignUpFragment extends Fragment {
                             String UID = mAuth.getCurrentUser().getUid();
                             // adding to the database
                             db = FirebaseDatabase.getInstance();
-                            userRef = db.getReference("users/" + UID);
+                            userRef = db.getReference("users");
                             String id = userRef.push().getKey();
 
                             // user schema
