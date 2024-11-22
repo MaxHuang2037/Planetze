@@ -13,7 +13,6 @@
     <string name="planetze_logo">planetze logo</string>
     <string name="sign_up">Sign Up</string>
     <string name="login">Login</string>
-    <string name="dashboard_welcome">Welcome, {{ username }}</string>
     <string name="image_description">planetze logo</string>
     <string name="eco_tracker">Eco Tracker</string>
     <string name="logout">Logout</string>
@@ -28,5 +27,9 @@
         <item>Yearly</item>
     </string-array>
     <string-array name="categories_array">
+        <item>Books</item>
+        <item>Movies</item>
     </string-array>
+
+
 </resources>
