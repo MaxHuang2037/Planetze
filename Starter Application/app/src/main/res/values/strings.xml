@@ -20,6 +20,7 @@
     <string name="eco_hub">Eco Hub</string>
     <string name="eco_balance">Eco Balance</string>
     <string name="eco_gauge">Eco Gauge</string>
+    <string name="today_s_carbon_emissions">Today\'s Carbon Emissions:</string>
 
     <string-array name="date_range_array">
         <item>Weekly</item>
