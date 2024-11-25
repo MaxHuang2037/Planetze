@@ -7,6 +7,8 @@ public class User {
     private String email;
     private boolean firstTime;
 
+    private int[] totalEmissionsByCategory;
+
     public User() {}
 
     public User(String uid, String name, String email, boolean firstTime) {
