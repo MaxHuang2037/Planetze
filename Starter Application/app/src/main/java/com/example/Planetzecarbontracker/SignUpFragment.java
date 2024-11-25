@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024;
+package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUpFragment extends Fragment {
     private EditText name, email, password, confirmPassword;
