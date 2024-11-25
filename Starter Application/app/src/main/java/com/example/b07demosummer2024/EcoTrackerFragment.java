@@ -12,10 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.List;
+
 public class EcoTrackerFragment extends Fragment {
 
     private Button open_tracker;
     private TextView daily_emission;
+    private List<Emission> activities;
 
     @Nullable
     @Override
