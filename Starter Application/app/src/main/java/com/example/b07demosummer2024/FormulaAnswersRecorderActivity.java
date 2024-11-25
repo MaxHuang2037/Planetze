@@ -1,51 +1,54 @@
 package com.example.b07demosummer2024;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-public class FormulaAnswersRecorderActivity extends AppCompatActivity {
+public class FormulaAnswersRecorderActivity extends Fragment {
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.formula_answers_recorder);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.formula_answers_recorder, container, false);
 
         // Reference UI components
-        TextView transportationAnswers = findViewById(R.id.transportationAnswers);
-        TextView housingAnswers = findViewById(R.id.housingAnswers);
-        TextView totalEmissions = findViewById(R.id.totalEmissions);
-        Button backButton = findViewById(R.id.backButton);
+        TextView transportationAnswers = view.findViewById(R.id.transportationAnswers);
+        TextView housingAnswers = view.findViewById(R.id.housingAnswers);
+        TextView totalEmissions = view.findViewById(R.id.totalEmissions);
+        Button backButton = view.findViewById(R.id.backButton);
 
-        // Retrieve data passed from Intent
-        Intent intent = getIntent();
-        String transportationData = intent.getStringExtra("transportationData");
-        String housingData = intent.getStringExtra("housingData");
-        int totalCO2 = intent.getIntExtra("totalCO2", 0);
+        // Retrieve data passed via Bundle
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String transportationData = bundle.getString("transportationData", "No data available for transportation.");
+            String housingData = bundle.getString("housingData", "No data available for housing.");
+            int totalCO2 = bundle.getInt("totalCO2", 0);
 
-        // Display data with null safety
-        if (transportationData != null && !transportationData.isEmpty()) {
+            // Display data
             transportationAnswers.setText(transportationData);
+            housingAnswers.setText(housingData);
+            totalEmissions.setText("Total CO2 Emissions: " + totalCO2 + " Kg");
         } else {
             transportationAnswers.setText("No data available for transportation.");
-        }
-
-        if (housingData != null && !housingData.isEmpty()) {
-            housingAnswers.setText(housingData);
-        } else {
             housingAnswers.setText("No data available for housing.");
+            totalEmissions.setText("Total CO2 Emissions: 0 Kg");
         }
-
-        totalEmissions.setText("Total CO2 Emissions: " + totalCO2 + " Kg");
 
         // Set Back button functionality
         backButton.setOnClickListener(v -> {
-            finish(); // Close this activity and return to the previous screen
+            if (getActivity() != null) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
         });
+
+        return view;
     }
 }

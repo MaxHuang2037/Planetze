@@ -182,6 +182,7 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         calculateTransportationEmission();
         calculateHousingEmission();
 
+        // Prepare data for the results fragment
         StringBuilder transportationData = new StringBuilder("Transportation:\n");
         transportationData.append("1. ").append(questions[0]).append(": ").append(answers[0][chosenAnswers[0]]).append("\n");
         if (chosenAnswers[0] == 0) {
@@ -198,12 +199,27 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         housingData.append("11. ").append(questions[11]).append(": ").append(answers[11][chosenAnswers[11]]).append("\n");
         housingData.append("12. ").append(questions[12]).append(": ").append(answers[12][chosenAnswers[12]]).append("\n");
 
-        Intent intent = new Intent(getActivity(), FormulaAnswersRecorderActivity.class);
-        intent.putExtra("transportationData", transportationData.toString());
-        intent.putExtra("housingData", housingData.toString());
-        intent.putExtra("totalCO2", totalC02);
-        startActivity(intent);
+        // Pass data via a Bundle
+        Bundle bundle = new Bundle();
+        bundle.putString("transportationData", transportationData.length() > 0 ? transportationData.toString() : "No transportation data.");
+        bundle.putString("housingData", housingData.length() > 0 ? housingData.toString() : "No housing data.");
+        bundle.putInt("totalCO2", totalC02);
+
+        // Create and configure the results fragment
+        FormulaAnswersRecorderActivity resultsFragment = new FormulaAnswersRecorderActivity();
+        resultsFragment.setArguments(bundle);
+
+        // Replace the current fragment with the results fragment
+        if (getActivity() != null) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, resultsFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
+
+
 
     private void changeQuestion(int buttonType) {
         if (buttonType == 0) {
