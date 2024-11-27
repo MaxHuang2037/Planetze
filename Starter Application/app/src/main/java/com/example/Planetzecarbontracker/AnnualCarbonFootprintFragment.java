@@ -205,13 +205,15 @@ public class AnnualCarbonFootprintFragment extends Fragment {
             transportationEmissions += emissionFactor * distances[chosenAnswers[2]];
         }
 
-        int[][] publicTransportEmissions = {
-                {0, 0, 0, 0, 0},
-                {246, 819, 1638, 3071, 4095},
-                {573, 1911, 3822, 7166, 9555},
-                {573, 1911, 3822, 7166, 9555}
-        };
-        transportationEmissions += publicTransportEmissions[chosenAnswers[3]][chosenAnswers[4]];
+        if (chosenAnswers[3] != 0){
+            int[][] publicTransportEmissions = {
+                    {0, 0, 0, 0, 0},
+                    {246, 819, 1638, 3071, 4095},
+                    {573, 1911, 3822, 7166, 9555},
+                    {573, 1911, 3822, 7166, 9555}
+            };
+            transportationEmissions += publicTransportEmissions[chosenAnswers[3]][chosenAnswers[4]];
+        }
 
         int[] shortHaulFlightEmissions = {0, 225, 600, 1200, 1800};
         transportationEmissions += shortHaulFlightEmissions[chosenAnswers[5]];
@@ -256,7 +258,9 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         } else if (chosenAnswers[19] == 1){
             emmisions -= 4000;
         }
-         return emmisions;
+
+        // return 0 if we go into negatives
+         return Math.max(emmisions, 0);
     }
     private double calculateFoodEmissions() {
         double foodEmissions = 0.0;
@@ -330,7 +334,9 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         };
         int deviceIndex = chosenAnswers[22]; // Clamp to max device index
         consumptionEmissions -= electronicsRecycling[deviceIndex][recycleIndex];
-        return consumptionEmissions;
+
+        // return 0 if we go into negatives
+        return Math.max(consumptionEmissions, 0);
     }
 
     private void navigateToResults() {
@@ -349,7 +355,9 @@ public class AnnualCarbonFootprintFragment extends Fragment {
             transportationData.append("3. ").append(questions[2]).append(": ").append(answers[2][chosenAnswers[2]]).append("\n");
         }
         transportationData.append("4. ").append(questions[3]).append(": ").append(answers[3][chosenAnswers[3]]).append("\n");
-        transportationData.append("5. ").append(questions[4]).append(": ").append(answers[4][chosenAnswers[4]]).append("\n");
+        if (chosenAnswers[3] != 0) {
+            transportationData.append("5. ").append(questions[4]).append(": ").append(answers[4][chosenAnswers[4]]).append("\n");
+        }
         transportationData.append("6. ").append(questions[5]).append(": ").append(answers[5][chosenAnswers[5]]).append("\n");
         transportationData.append("7. ").append(questions[6]).append(": ").append(answers[6][chosenAnswers[6]]).append("\n");
         transportationData.append("Total emissions: ").append(transportationE).append("\n");
@@ -458,7 +466,7 @@ public class AnnualCarbonFootprintFragment extends Fragment {
                     // set some loadFragment after
                     break;
                 case 23:
-                    Toast.makeText(getContext(), calculateHousingEmission() + " kg", Toast.LENGTH_SHORT).show();
+                    navigateToResults();
                     return;
             }
             questionNumber += 1;

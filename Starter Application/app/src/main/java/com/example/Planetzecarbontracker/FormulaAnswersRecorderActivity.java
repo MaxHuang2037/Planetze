@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024;
+package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class FormulaAnswersRecorderActivity extends Fragment {
 
@@ -21,8 +24,8 @@ public class FormulaAnswersRecorderActivity extends Fragment {
 
         // Reference UI components
         TextView transportationAnswers = view.findViewById(R.id.transportationAnswers);
-        TextView housingAnswers = view.findViewById(R.id.housingAnswers);
         TextView foodAnswers = view.findViewById(R.id.foodAnswers);
+        TextView housingAnswers = view.findViewById(R.id.housingAnswers);
         TextView consumptionAnswers = view.findViewById(R.id.consumptionAnswers);
         TextView totalEmissions = view.findViewById(R.id.totalEmissions);
         Button backButton = view.findViewById(R.id.backButton);
@@ -34,7 +37,7 @@ public class FormulaAnswersRecorderActivity extends Fragment {
             String housingData = bundle.getString("housingData", "No data available for housing.");
             String foodData = bundle.getString("foodData", "No data available for food.");
             String consumptionData = bundle.getString("consumptionData", "No data available for consumption.");
-            int totalCO2 = bundle.getInt("totalCO2", 0);
+            double totalCO2 = bundle.getDouble("totalCO2", 0);
 
             // Display data
             transportationAnswers.setText(transportationData);
@@ -51,12 +54,20 @@ public class FormulaAnswersRecorderActivity extends Fragment {
         }
 
         // Set Back button functionality
-        backButton.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().getSupportFragmentManager().popBackStack();
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // change to emissions overview page
+                loadFragment(new DashboardFragment());
             }
         });
 
         return view;
+    }
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
