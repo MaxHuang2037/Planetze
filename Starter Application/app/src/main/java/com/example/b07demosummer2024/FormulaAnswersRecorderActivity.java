@@ -22,6 +22,8 @@ public class FormulaAnswersRecorderActivity extends Fragment {
         // Reference UI components
         TextView transportationAnswers = view.findViewById(R.id.transportationAnswers);
         TextView housingAnswers = view.findViewById(R.id.housingAnswers);
+        TextView foodAnswers = view.findViewById(R.id.foodAnswers);
+        TextView consumptionAnswers = view.findViewById(R.id.consumptionAnswers);
         TextView totalEmissions = view.findViewById(R.id.totalEmissions);
         Button backButton = view.findViewById(R.id.backButton);
 
@@ -30,16 +32,22 @@ public class FormulaAnswersRecorderActivity extends Fragment {
         if (bundle != null) {
             String transportationData = bundle.getString("transportationData", "No data available for transportation.");
             String housingData = bundle.getString("housingData", "No data available for housing.");
+            String foodData = bundle.getString("foodData", "No data available for food.");
+            String consumptionData = bundle.getString("consumptionData", "No data available for consumption.");
             int totalCO2 = bundle.getInt("totalCO2", 0);
 
             // Display data
             transportationAnswers.setText(transportationData);
             housingAnswers.setText(housingData);
-            totalEmissions.setText("Total CO2 Emissions: " + totalCO2 + " Kg");
+            foodAnswers.setText(foodData);
+            consumptionAnswers.setText(consumptionData);
+            totalEmissions.setText("Total CO2 Emissions: " + (totalCO2 / 1000.0) + " Tons");
         } else {
             transportationAnswers.setText("No data available for transportation.");
             housingAnswers.setText("No data available for housing.");
-            totalEmissions.setText("Total CO2 Emissions: 0 Kg");
+            foodAnswers.setText("No data available for food.");
+            consumptionAnswers.setText("No data available for consumption.");
+            totalEmissions.setText("Total CO2 Emissions: 0 Tons");
         }
 
         // Set Back button functionality

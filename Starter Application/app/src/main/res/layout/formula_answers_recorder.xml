@@ -63,6 +63,48 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp" />
 
+        <!-- Food Section -->
+        <TextView
+            android:id="@+id/foodHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Food"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/foodAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Food answers will be displayed here."
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:background="#F0F0F0"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Consumption Section -->
+        <TextView
+            android:id="@+id/consumptionHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consumption"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/consumptionAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consumption answers will be displayed here."
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:background="#F0F0F0"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
         <!-- Total CO2 Emissions -->
         <TextView
             android:id="@+id/totalEmissions"
