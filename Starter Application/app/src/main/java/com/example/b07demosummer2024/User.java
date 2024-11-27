@@ -6,14 +6,16 @@ public class User {
     private String name;
     private String email;
     private boolean firstTime;
+    private EcoTracker ecoTracker;
 
     public User() {}
 
-    public User(String uid, String name, String email, boolean firstTime) {
+    public User(String uid, String name, String email, boolean firstTime, EcoTracker ecoTracker) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.firstTime = firstTime;
+        this.ecoTracker = ecoTracker;
     }
 
     // Getters and setters
@@ -25,4 +27,10 @@ public class User {
     public void setFirstTime(boolean firstTime) { this.firstTime = firstTime; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    public EcoTracker getEcoTracker () {
+        return ecoTracker;
+    }
+    public void setEcoTracker (EcoTracker ecoTracker) {
+        this.ecoTracker = ecoTracker;
+    }
 }

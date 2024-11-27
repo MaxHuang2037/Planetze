@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,10 +120,12 @@ public class SignUpFragment extends Fragment {
                             String id = userRef.push().getKey();
 
                             // user schema
-                            User user = new User(UID, name, email, true);
+                            EcoTracker ecoTracker = new EcoTracker(new ArrayList<>(), "test");
+                            ecoTracker.addEmission(new Emission(0, 0, 10, new Date(2024, 9, 5)));
+                            User user = new User(UID, name, email, true, ecoTracker);
+
 
                             userRef.child(id).setValue(user);
-
                             Toast.makeText(getContext(), "Account created.",
                                     Toast.LENGTH_SHORT).show();
                             loadFragment(new EmailVerificationReminderActivity());
