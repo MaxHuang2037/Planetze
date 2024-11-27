@@ -43,8 +43,6 @@ public class DashboardFragment extends Fragment {
         eco_gauge_button = view.findViewById(R.id.eco_gauge_button);
         logout_button = view.findViewById(R.id.logout_button);
 
-
-
         if(currentUser != null){
             //Read from the database
             String UID = mAuth.getCurrentUser().getUid();

@@ -42,10 +42,6 @@ public class SignUpFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if(currentUser != null){
-            // redirect to main page
-        }
-
         name = view.findViewById((R.id.editTextTextName));
         email = view.findViewById(R.id.editTextTextEmailAddress);
         password = view.findViewById(R.id.editTextTextPassword);

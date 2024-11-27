@@ -22,11 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
-    private FirebaseDatabase db;
-    private DatabaseReference userRef;
 
     private User user;
-
+    private FirebaseDatabase db;
+    private DatabaseReference userRef;
 
     @Nullable
     @Override
@@ -39,31 +38,35 @@ public class HomeFragment extends Fragment {
         // for testing
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            //Read from the database
-            String UID = mAuth.getCurrentUser().getUid();
-            db = FirebaseDatabase.getInstance();
-            userRef = db.getReference("users");
+
+        db = FirebaseDatabase.getInstance();
+        userRef = db.getReference("users");
+
+        if(currentUser != null && currentUser.isEmailVerified()){
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String UID = currentUser.getUid();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User u = snapshot.getValue(User.class);
-                        if(u.getId().equals(UID)){
+                        if(u.getId().equals(UID) && u.getFirstTime()){
                             user = u;
-                            Toast.makeText(getContext(), "WELCOME " + user.getName(), Toast.LENGTH_SHORT).show();
                         }
                     }
-//                Log.d(TAG, "Value is: " + value);
-                }
 
+                    if(user.getFirstTime()){
+                        loadFragment(new AnnualCarbonFootprintFragment());
+                    } else {
+                        loadFragment(new DashboardFragment());
+                    }
+                }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     // Failed to read value
-                    Toast.makeText(getContext(), "failed to read value", Toast.LENGTH_SHORT).show();
-//                Log.w(TAG, "Failed to read value.", error.toException());
                 }
             });
+        } else {
+            mAuth.signOut();
         }
 
         loginButton.setOnClickListener(new View.OnClickListener() {

@@ -34,10 +34,13 @@ public class EmailVerificationReminderActivity extends Fragment {
         resendVerificationButton = view.findViewById(R.id.resendVerificationButton);
         mAuth = FirebaseAuth.getInstance();
 
+        // initial verification email
+        sendVerificationEmail();
+
         resendVerificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resendVerificationEmail();
+                sendVerificationEmail();
             }
         });
 
@@ -50,7 +53,7 @@ public class EmailVerificationReminderActivity extends Fragment {
         return view;
     }
 
-    private void resendVerificationEmail() {
+    private void sendVerificationEmail() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             user.sendEmailVerification()

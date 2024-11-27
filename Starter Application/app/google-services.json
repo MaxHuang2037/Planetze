@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:943264646151:android:59283f5c0004e905cb16a2",
+        "mobilesdk_app_id": "1:943264646151:android:e40bdea39d323e45cb16a2",
         "android_client_info": {
-          "package_name": "com.example.b07demosummer2024"
+          "package_name": "com.example.Planetzecarbontracker"
         }
       },
       "oauth_client": [],
@@ -27,9 +27,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:943264646151:android:b0b18eb08d96da26cb16a2",
+        "mobilesdk_app_id": "1:943264646151:android:59283f5c0004e905cb16a2",
         "android_client_info": {
-          "package_name": "com.example.planetze2024"
+          "package_name": "com.example.b07demosummer2024"
         }
       },
       "oauth_client": [],

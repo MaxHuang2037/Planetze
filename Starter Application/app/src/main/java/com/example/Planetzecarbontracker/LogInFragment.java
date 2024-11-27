@@ -20,6 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LogInFragment extends Fragment {
     private EditText email, password;
@@ -27,8 +32,9 @@ public class LogInFragment extends Fragment {
 
     private Button loginButton, backButton;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase db;
+    private DatabaseReference userRef;
     private static final String TAG = "EmailPassword";
-
 
     @Nullable
     @Override
@@ -100,9 +106,15 @@ public class LogInFragment extends Fragment {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(getContext(), "LOGGED IN.",
-                                Toast.LENGTH_SHORT).show();
-                        loadFragment(new DashboardFragment());
+
+                        if(user.isEmailVerified()){
+                            Toast.makeText(getContext(), "LOGGED IN", Toast.LENGTH_SHORT).show();
+                            checkFirstTime();
+                        } else {
+                            Toast.makeText(getContext(), "Account not verified. Please check your email", Toast.LENGTH_SHORT).show();
+                            user.sendEmailVerification();
+                        }
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -111,6 +123,30 @@ public class LogInFragment extends Fragment {
                     }
                 }
             });
+    }
+
+    private void checkFirstTime(){
+        //Read from the database
+        String UID = mAuth.getCurrentUser().getUid();
+        db = FirebaseDatabase.getInstance();
+        userRef = db.getReference("users");
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User u = snapshot.getValue(User.class);
+                    if(u.getId().equals(UID) && u.getFirstTime()){
+                        loadFragment(new AnnualCarbonFootprintFragment());
+                        return;
+                    }
+                }
+                loadFragment(new DashboardFragment());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+            }
+        });
     }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
