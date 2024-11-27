@@ -8,12 +8,12 @@ public class EcoTracker {
     private String test;
 
     private List<Emission> emissions = new ArrayList<>();
-//    private final String[] categories = {
-//            "Transportation Activities",
-//            "Food Consumption Activities",
-//            "Consumption and Shopping Activities",
-//            "Energy"
-//    };
+    private final String[] categories = {
+            "Transportation Activities",
+            "Food Consumption Activities",
+            "Consumption and Shopping Activities",
+            "Energy"
+    };
 
     public EcoTracker() {}
 

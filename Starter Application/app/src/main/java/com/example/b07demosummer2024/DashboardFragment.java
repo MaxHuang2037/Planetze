@@ -39,7 +39,7 @@ public class DashboardFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         welcome_message = view.findViewById(R.id.welcome_message);
-        eco_tracker_button = view.findViewById(R.id.eco_gauge_button);
+        eco_tracker_button = view.findViewById(R.id.eco_tracker_button);
         eco_gauge_button = view.findViewById(R.id.eco_gauge_button);
         logout_button = view.findViewById(R.id.logout_button);
 
@@ -84,7 +84,7 @@ public class DashboardFragment extends Fragment {
         eco_tracker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loadFragment(new EcoTrackerFragment());
             }
         });
 
