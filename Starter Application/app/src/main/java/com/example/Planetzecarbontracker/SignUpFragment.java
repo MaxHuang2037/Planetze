@@ -113,9 +113,7 @@ public class SignUpFragment extends Fragment {
                             userRef = db.getReference("users");
 
                             // user schema
-                            EcoTracker ecoTracker = new EcoTracker(new ArrayList<>(), "test");
-                            ecoTracker.addEmission(new Emission(0, 0, 10, new Date(2024, 9, 5)));
-                            User user = new User(UID, name, email, true, ecoTracker);
+                            User user = new User(UID, name, email, true);
 
                             userRef.child(UID).setValue(user);
 

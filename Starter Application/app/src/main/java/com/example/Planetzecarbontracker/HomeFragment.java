@@ -37,6 +37,7 @@ public class HomeFragment extends Fragment {
 
         // for testing
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         db = FirebaseDatabase.getInstance();

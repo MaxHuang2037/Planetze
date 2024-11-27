@@ -1,6 +1,8 @@
 package com.example.Planetzecarbontracker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class User {
@@ -13,13 +15,14 @@ public class User {
     private EcoTracker ecoTracker;
     public User() {}
 
-    public User(String uid, String name, String email, boolean firstTime, EcoTracker ecoTracker) {
+    public User(String uid, String name, String email, boolean firstTime) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.firstTime = firstTime;
         this.ecoTracker = ecoTracker;
         this.totalEmissionsByCategory = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0);
+        this.ecoTracker = new EcoTracker(new ArrayList<>(), "test");
     }
 
     // Getters and setters
