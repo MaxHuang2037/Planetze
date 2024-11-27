@@ -40,19 +40,13 @@ public class HomeFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         db = FirebaseDatabase.getInstance();
-        userRef = db.getReference("users");
 
         if(currentUser != null && currentUser.isEmailVerified()){
+            userRef = db.getReference("users").child(mAuth.getUid());
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String UID = currentUser.getUid();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        User u = snapshot.getValue(User.class);
-                        if(u.getId().equals(UID) && u.getFirstTime()){
-                            user = u;
-                        }
-                    }
+                    user = dataSnapshot.getValue(User.class);
 
                     if(user.getFirstTime()){
                         loadFragment(new AnnualCarbonFootprintFragment());

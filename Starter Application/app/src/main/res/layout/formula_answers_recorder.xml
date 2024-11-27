@@ -31,18 +31,18 @@
             android:textStyle="bold"
             android:layout_marginTop="16dp" />
 
+        <!-- Food Section -->
         <TextView
             android:id="@+id/transportationAnswers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Transportation answers will be displayed here."
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:background="#F0F0F0"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:background="#F0F0F0"
+            android:padding="8dp"
+            android:text="Transportation answers will be displayed here."
+            android:textSize="16sp" />
 
-        <!-- Food Section -->
         <TextView
             android:id="@+id/foodHeader"
             android:layout_width="match_parent"

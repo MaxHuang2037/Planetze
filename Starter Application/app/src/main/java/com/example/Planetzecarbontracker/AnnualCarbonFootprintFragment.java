@@ -1,6 +1,7 @@
 package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
@@ -128,13 +139,30 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         {3010, 900, 0, 2450, 2900, 3300, 820, 0, 4650, 3300, 4100, 2000, 0, 5400, 4200, 5400, 2850, 0, 5600, 4200, 8500, 3600,0,7400, 4900},
         {3577, 980, 0, 2600, 3300, 3600, 980, 0, 5150, 3600, 4300, 2350, 0,5700, 4600,6200, 3150,0, 6000, 4630, 11100, 4000,0,7800, 5100}
     };
-
     int[] chosenAnswers;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase db;
+    private DatabaseReference userRef;
+    private User user;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.annual_carbon_footprint_fragment, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        userRef = db.getReference("users").child(mAuth.getUid());
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+            }
+        });
 
         questionText = view.findViewById(R.id.questionText);
         nextButton = view.findViewById(R.id.nextButton);
@@ -401,17 +429,26 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         bundle.putString("consumptionData", consumptionData.length() > 0 ? consumptionData.toString() : "No consumption data.");
         bundle.putDouble("totalCO2", totalC02);
 
-//         Create and Navigate to Results Fragment
-        FormulaAnswersRecorderActivity resultsFragment = new FormulaAnswersRecorderActivity();
-        resultsFragment.setArguments(bundle);
+        // saving initial data within the user
+        User updatedUser = new User(user.getId(), user.getName(), user.getEmail(), true); // change first time later, this is true rn for testing
+        updatedUser.setTotalEmissionsByCategory(Arrays.asList(transportationE, foodE, housingE, consumptionE, totalC02));
 
-        if (getActivity() != null) {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, resultsFragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
+        userRef.setValue(updatedUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+//         Create and Navigate to Results Fragment
+                FormulaAnswersRecorderActivity resultsFragment = new FormulaAnswersRecorderActivity();
+                resultsFragment.setArguments(bundle);
+
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, resultsFragment)
+                        .addToBackStack(null)
+                        .commit();
+                }
+            }
+        });
     }
 
     private void changeQuestion(int buttonType){

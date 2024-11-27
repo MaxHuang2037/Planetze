@@ -1,13 +1,15 @@
 package com.example.Planetzecarbontracker;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class User {
 
     private String uid;
     private String name;
     private String email;
     private boolean firstTime;
-
-    private int[] totalEmissionsByCategory;
+    private List<Double> totalEmissionsByCategory;
 
     public User() {}
 
@@ -16,6 +18,8 @@ public class User {
         this.name = name;
         this.email = email;
         this.firstTime = firstTime;
+
+        this.totalEmissionsByCategory = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     // Getters and setters
@@ -27,4 +31,8 @@ public class User {
     public void setFirstTime(boolean firstTime) { this.firstTime = firstTime; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    public void setTotalEmissionsByCategory(List<Double> totalEmissions) {this.totalEmissionsByCategory = totalEmissions;}
+    public void addToTotalEmissions(int transportationE, int foodE, int housingE, int consumptionE, int totalE){
+
+    }public List<Double> getTotalEmissionsByCategory(){ return totalEmissionsByCategory;}
 }

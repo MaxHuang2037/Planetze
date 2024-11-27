@@ -104,16 +104,15 @@ public class SignUpFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            String UID = mAuth.getCurrentUser().getUid();
                             // adding to the database
                             db = FirebaseDatabase.getInstance();
+                            String UID = mAuth.getUid();
                             userRef = db.getReference("users");
-                            String id = userRef.push().getKey();
 
                             // user schema
                             User user = new User(UID, name, email, true);
 
-                            userRef.child(id).setValue(user);
+                            userRef.child(UID).setValue(user);
 
                             Toast.makeText(getContext(), "Account created.",
                                     Toast.LENGTH_SHORT).show();

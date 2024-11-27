@@ -51,10 +51,6 @@ public class LogInFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if(currentUser != null){
-            // redirect to main page
-        }
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,24 +125,23 @@ public class LogInFragment extends Fragment {
         //Read from the database
         String UID = mAuth.getCurrentUser().getUid();
         db = FirebaseDatabase.getInstance();
-        userRef = db.getReference("users");
+        userRef = db.getReference("users").child(mAuth.getUid());
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User u = snapshot.getValue(User.class);
-                    if(u.getId().equals(UID) && u.getFirstTime()){
-                        loadFragment(new AnnualCarbonFootprintFragment());
-                        return;
-                    }
+                User user = dataSnapshot.getValue(User.class);
+                if(user.getFirstTime()){
+                    loadFragment(new AnnualCarbonFootprintFragment());
+                } else {
+                    loadFragment(new DashboardFragment());
                 }
-                loadFragment(new DashboardFragment());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
             }
         });
+
     }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

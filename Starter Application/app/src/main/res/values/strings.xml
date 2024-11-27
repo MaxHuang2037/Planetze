@@ -22,7 +22,7 @@
     <string name="eco_gauge">Eco Gauge</string>
 
     <string-array name="date_range_array">
-        <item>Weekly</item>
+        <item>Daily</item>
         <item>Monthly</item>
         <item>Yearly</item>
     </string-array>
@@ -30,6 +30,4 @@
         <item>Books</item>
         <item>Movies</item>
     </string-array>
-
-
 </resources>
