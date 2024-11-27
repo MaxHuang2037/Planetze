@@ -20,9 +20,14 @@
     <string name="eco_hub">Eco Hub</string>
     <string name="eco_balance">Eco Balance</string>
     <string name="eco_gauge">Eco Gauge</string>
+    <string name="today_s_carbon_emissions">Today\'s Carbon Emissions:</string>
+    <string name="daily_activities">Daily Activities</string>
+    <string name="add_activity">Add Activities</string>
+    <string name="activity_tracker">Activity Tracker</string>
+    <string name="new_activity">New Activity</string>
 
     <string-array name="date_range_array">
-        <item>Weekly</item>
+        <item>Daily</item>
         <item>Monthly</item>
         <item>Yearly</item>
     </string-array>
@@ -30,6 +35,4 @@
         <item>Books</item>
         <item>Movies</item>
     </string-array>
-
-
 </resources>
