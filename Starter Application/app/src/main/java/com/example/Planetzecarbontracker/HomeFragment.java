@@ -1,11 +1,10 @@
-package com.example.b07demosummer2024;
+package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,77 +20,60 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class DashboardFragment extends Fragment {
+public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
+
+    private User user;
     private FirebaseDatabase db;
     private DatabaseReference userRef;
 
-    private TextView welcome_message;
-    private Button eco_tracker_button, eco_gauge_button, logout_button;
-
-    private User user;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_dashboard, container, false);
+        View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
+        Button loginButton = view.findViewById(R.id.loginButton);
+        Button signupButton = view.findViewById(R.id.signupButton);
+
+        // for testing
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        welcome_message = view.findViewById(R.id.welcome_message);
-        eco_tracker_button = view.findViewById(R.id.eco_tracker_button);
-        eco_gauge_button = view.findViewById(R.id.eco_gauge_button);
-        logout_button = view.findViewById(R.id.logout_button);
+        db = FirebaseDatabase.getInstance();
 
-
-
-        if(currentUser != null){
-            //Read from the database
-            String UID = mAuth.getCurrentUser().getUid();
-            db = FirebaseDatabase.getInstance();
-            userRef = db.getReference("users");
+        if(currentUser != null && currentUser.isEmailVerified()){
+            userRef = db.getReference("users").child(mAuth.getUid());
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        User u = snapshot.getValue(User.class);
-                        if(u.getId().equals(UID)){
-                            user = u;
-                            Toast.makeText(getContext(), "WELCOME " + user.getName(), Toast.LENGTH_SHORT).show();
-                            welcome_message.setText("Welcome " + user.getName());
-                        }
-                    }
-//                Log.d(TAG, "Value is: " + value);
-                }
+                    user = dataSnapshot.getValue(User.class);
 
+                    if(user.getFirstTime()){
+                        loadFragment(new AnnualCarbonFootprintFragment());
+                    } else {
+                        loadFragment(new DashboardFragment());
+                    }
+                }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     // Failed to read value
                 }
             });
         } else {
-            loadFragment(new HomeFragment());
+            mAuth.signOut();
         }
 
-        logout_button.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                loadFragment(new HomeFragment());
+                loadFragment(new LogInFragment());
             }
         });
 
-        eco_tracker_button.setOnClickListener(new View.OnClickListener() {
+        signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new EcoTrackerFragment());
-            }
-        });
-
-        eco_gauge_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new EcoGaugeFragement());
+                loadFragment(new SignUpFragment());
             }
         });
 

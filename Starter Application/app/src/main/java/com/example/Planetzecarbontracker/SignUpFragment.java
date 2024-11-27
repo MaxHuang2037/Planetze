@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024;
+package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUpFragment extends Fragment {
     private EditText name, email, password, confirmPassword;
@@ -46,10 +44,6 @@ public class SignUpFragment extends Fragment {
         // Check if user is signed in (non-null) and update UI accordingly.
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if(currentUser != null){
-            // redirect to main page
-        }
 
         name = view.findViewById((R.id.editTextTextName));
         email = view.findViewById(R.id.editTextTextEmailAddress);
@@ -113,19 +107,18 @@ public class SignUpFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            String UID = mAuth.getCurrentUser().getUid();
                             // adding to the database
                             db = FirebaseDatabase.getInstance();
+                            String UID = mAuth.getUid();
                             userRef = db.getReference("users");
-                            String id = userRef.push().getKey();
 
                             // user schema
                             EcoTracker ecoTracker = new EcoTracker(new ArrayList<>(), "test");
                             ecoTracker.addEmission(new Emission(0, 0, 10, new Date(2024, 9, 5)));
                             User user = new User(UID, name, email, true, ecoTracker);
 
+                            userRef.child(UID).setValue(user);
 
-                            userRef.child(id).setValue(user);
                             Toast.makeText(getContext(), "Account created.",
                                     Toast.LENGTH_SHORT).show();
                             loadFragment(new EmailVerificationReminderActivity());

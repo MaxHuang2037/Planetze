@@ -1,9 +1,8 @@
-package com.example.b07demosummer2024;
+package com.example.Planetzecarbontracker;
 
 // EmailVerificationReminderActivity.java
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -35,10 +34,13 @@ public class EmailVerificationReminderActivity extends Fragment {
         resendVerificationButton = view.findViewById(R.id.resendVerificationButton);
         mAuth = FirebaseAuth.getInstance();
 
+        // initial verification email
+        sendVerificationEmail();
+
         resendVerificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resendVerificationEmail();
+                sendVerificationEmail();
             }
         });
 
@@ -51,7 +53,7 @@ public class EmailVerificationReminderActivity extends Fragment {
         return view;
     }
 
-    private void resendVerificationEmail() {
+    private void sendVerificationEmail() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             user.sendEmailVerification()

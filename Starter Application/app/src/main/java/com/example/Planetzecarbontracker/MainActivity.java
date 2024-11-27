@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024;
+package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
 
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 //        myRef.child("movies").setValue("B07 Demo!");
 
         if (savedInstanceState == null) {
-            loadFragment(new DashboardFragment());
+            loadFragment(new HomeFragment());
         }
     }
 

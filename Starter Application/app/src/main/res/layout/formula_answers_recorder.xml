@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <TextView
+            android:id="@+id/summaryHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Carbon Emissions Summary"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp" />
+
+        <!-- Transportation Section -->
+        <TextView
+            android:id="@+id/transportationHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transportation"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <!-- Food Section -->
+        <TextView
+            android:id="@+id/transportationAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#F0F0F0"
+            android:padding="8dp"
+            android:text="Transportation answers will be displayed here."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/foodHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Food"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/foodAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#F0F0F0"
+            android:padding="8dp"
+            android:text="Food answers will be displayed here."
+            android:textSize="16sp" />
+
+        <!-- Housing Section -->
+        <TextView
+            android:id="@+id/housingHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Housing"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/housingAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#F0F0F0"
+            android:padding="8dp"
+            android:text="Housing answers will be displayed here."
+            android:textSize="16sp" />
+
+        <!-- Consumption Section -->
+
+        <TextView
+            android:id="@+id/consumptionHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consumption"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/consumptionAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consumption answers will be displayed here."
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:background="#F0F0F0"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Total CO2 Emissions -->
+        <TextView
+            android:id="@+id/totalEmissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total CO2 Emissions: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:background="#E0E0E0" />
+
+        <!-- Back Button -->
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back to Main Menu"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:background="@color/design_default_color_primary"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+</ScrollView>
