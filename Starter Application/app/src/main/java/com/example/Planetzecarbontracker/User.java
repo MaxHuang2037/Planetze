@@ -10,15 +10,15 @@ public class User {
     private String email;
     private boolean firstTime;
     private List<Double> totalEmissionsByCategory;
-
+    private EcoTracker ecoTracker;
     public User() {}
 
-    public User(String uid, String name, String email, boolean firstTime) {
+    public User(String uid, String name, String email, boolean firstTime, EcoTracker ecoTracker) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.firstTime = firstTime;
-
+        this.ecoTracker = ecoTracker;
         this.totalEmissionsByCategory = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
@@ -35,4 +35,10 @@ public class User {
     public void addToTotalEmissions(int transportationE, int foodE, int housingE, int consumptionE, int totalE){
 
     }public List<Double> getTotalEmissionsByCategory(){ return totalEmissionsByCategory;}
+    public EcoTracker getEcoTracker () {
+        return ecoTracker;
+    }
+    public void setEcoTracker (EcoTracker ecoTracker) {
+        this.ecoTracker = ecoTracker;
+    }
 }

@@ -82,7 +82,7 @@ public class DashboardFragment extends Fragment {
         eco_tracker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loadFragment(new EcoTrackerFragment());
             }
         });
 

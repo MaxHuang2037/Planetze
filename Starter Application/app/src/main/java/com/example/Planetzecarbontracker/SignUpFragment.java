@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class SignUpFragment extends Fragment {
     private EditText name, email, password, confirmPassword;
     private TextView logInRedirect;
@@ -110,7 +113,9 @@ public class SignUpFragment extends Fragment {
                             userRef = db.getReference("users");
 
                             // user schema
-                            User user = new User(UID, name, email, true);
+                            EcoTracker ecoTracker = new EcoTracker(new ArrayList<>(), "test");
+                            ecoTracker.addEmission(new Emission(0, 0, 10, new Date(2024, 9, 5)));
+                            User user = new User(UID, name, email, true, ecoTracker);
 
                             userRef.child(UID).setValue(user);
 
