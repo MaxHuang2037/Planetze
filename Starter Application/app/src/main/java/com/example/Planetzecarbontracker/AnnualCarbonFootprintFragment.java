@@ -23,7 +23,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
     private RadioButton q1, q2, q3, q4, q5, q6;
     private TextView[] choices;
     private int questionNumber = 0;
-    private int totalC02 = 0;
     private String[] questions = {
         "Do you own or regularly use a car?",
         "What type of car do you drive?",
@@ -75,7 +74,7 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         {"Yes, primarily (more than 50% of energy use)", "Yes, partially (less than 50% of energy use)", "No"},
         {"Monthly", "Quarterly", "Annually", "Rarely"},
         {"Yes, regularly", "Yes, occasionally", "No"},
-        {"None", "1", "2", "3 or more"},
+        {"None", "1", "2", "3", "4 or more"},
         {"Never", "Occasionally", "Frequently", "Always"}
     };
 
@@ -189,7 +188,39 @@ public class AnnualCarbonFootprintFragment extends Fragment {
 
         return view;
     }
+    private double calculateTransportationEmission() {
+        double transportationEmissions = 0.0;
 
+        if (chosenAnswers[0] == 0) {
+            double emissionFactor = 0.0;
+            switch (chosenAnswers[1]) {
+                case 0: emissionFactor = 0.24; break;
+                case 1: emissionFactor = 0.27; break;
+                case 2: emissionFactor = 0.16; break;
+                case 3: emissionFactor = 0.05; break;
+                case 4: emissionFactor = 0.2; break;
+            }
+
+            int[] distances = {5000, 10000, 15000, 20000, 25000, 35000};
+            transportationEmissions += emissionFactor * distances[chosenAnswers[2]];
+        }
+
+        int[][] publicTransportEmissions = {
+                {0, 0, 0, 0, 0},
+                {246, 819, 1638, 3071, 4095},
+                {573, 1911, 3822, 7166, 9555},
+                {573, 1911, 3822, 7166, 9555}
+        };
+        transportationEmissions += publicTransportEmissions[chosenAnswers[3]][chosenAnswers[4]];
+
+        int[] shortHaulFlightEmissions = {0, 225, 600, 1200, 1800};
+        transportationEmissions += shortHaulFlightEmissions[chosenAnswers[5]];
+
+        int[] longHaulFlightEmissions = {0, 825, 2200, 4400, 6600};
+        transportationEmissions += longHaulFlightEmissions[chosenAnswers[6]];
+
+        return transportationEmissions;
+    }
     private double calculateHousingEmission(){
         // FORMULA
         // FOR Y: houseType * 12 + homeSize * 4 + numPeople
@@ -226,6 +257,153 @@ public class AnnualCarbonFootprintFragment extends Fragment {
             emmisions -= 4000;
         }
          return emmisions;
+    }
+    private double calculateFoodEmissions() {
+        double foodEmissions = 0.0;
+        // Question 1: Diet
+        switch (chosenAnswers[7]) {
+            case 0: foodEmissions += 1000; break;
+            case 1: foodEmissions += 500; break;
+            case 2: foodEmissions += 1500; break;
+        }
+
+        if(chosenAnswers[7] == 3){
+            // Question 2: Beef Consumption
+            int[] beefEmissions = {2500, 1900, 1300, 0};
+            foodEmissions += beefEmissions[chosenAnswers[8]];
+
+            // Question 3: Pork Consumption
+            int[] porkEmissions = {1450, 860, 450, 0};
+            foodEmissions += porkEmissions[chosenAnswers[9]];
+
+            // Question 4: Chicken Consumption
+            int[] chickenEmissions = {950, 600, 200, 0};
+            foodEmissions += chickenEmissions[chosenAnswers[10]];
+
+            // Question 5: Fish Consumption
+            int[] fishEmissions = {800, 500, 150, 0};
+            foodEmissions += fishEmissions[chosenAnswers[11]];
+        }
+
+        // Question 6: Food Waste
+        double[] foodWasteEmissions = {0, 23.4, 70.2, 140.4};
+        foodEmissions += foodWasteEmissions[chosenAnswers[12]];
+
+        return foodEmissions;
+    }
+
+    private double calculateConsumptionEmissions() {
+        double consumptionEmissions = 0.0;
+        // Question 1: Clothing
+        int[] clothingEmissions = {360, 120, 100, 5};
+        int clothingCO2 = clothingEmissions[chosenAnswers[20]];
+        consumptionEmissions += clothingCO2;
+
+        // Question 2: Eco-Friendly Products
+        switch (chosenAnswers[21]) {
+            case 0: consumptionEmissions *= 0.5; break; // Regularly
+            case 1: consumptionEmissions *= 0.3; break; // Occasionally
+        }
+
+        // Question 3: Electronics
+        int[] electronicsEmissions = {0, 300, 600, 900, 1200};
+        consumptionEmissions += electronicsEmissions[chosenAnswers[22]];
+
+        // Question 4: Recycling
+        double[][] recyclingReductions = {
+                {0, 54, 108, 180}, // Monthly Buyers
+                {0, 34.5, 69, 136.5}, // Quarterly buyers
+                {0, 15, 30, 50},   // Annual Buyers
+                {0, 0.75, 1.5, 2.5} // Rarely Buyers
+        };
+        int buyerIndex = chosenAnswers[20]; // Clothing buyers
+        int recycleIndex = chosenAnswers[23]; // Recycling frequency
+        consumptionEmissions -= recyclingReductions[buyerIndex][recycleIndex];
+
+        // Electronics Recycling
+        int[][] electronicsRecycling = {
+                {0, 0, 0, 0, 0}, // 0 Devices
+                {0, 45, 60, 90}, // 1 Device
+                {0, 60, 120, 180}, // 2 Devices
+                {0, 90, 180, 270}, // 3 Devices
+                {0, 120, 240, 360} // 4+ Devices
+        };
+        int deviceIndex = chosenAnswers[22]; // Clamp to max device index
+        consumptionEmissions -= electronicsRecycling[deviceIndex][recycleIndex];
+        return consumptionEmissions;
+    }
+
+    private void navigateToResults() {
+        double transportationE = calculateTransportationEmission();
+        double foodE = calculateFoodEmissions();
+        double housingE = calculateHousingEmission();
+        double consumptionE = calculateConsumptionEmissions();
+
+        double totalC02 = transportationE + foodE + housingE + consumptionE;
+
+        // Prepare Transportation Data
+        StringBuilder transportationData = new StringBuilder("Transportation:\n");
+        transportationData.append("1. ").append(questions[0]).append(": ").append(answers[0][chosenAnswers[0]]).append("\n");
+        if (chosenAnswers[0] == 0) {
+            transportationData.append("2. ").append(questions[1]).append(": ").append(answers[1][chosenAnswers[1]]).append("\n");
+            transportationData.append("3. ").append(questions[2]).append(": ").append(answers[2][chosenAnswers[2]]).append("\n");
+        }
+        transportationData.append("4. ").append(questions[3]).append(": ").append(answers[3][chosenAnswers[3]]).append("\n");
+        transportationData.append("5. ").append(questions[4]).append(": ").append(answers[4][chosenAnswers[4]]).append("\n");
+        transportationData.append("6. ").append(questions[5]).append(": ").append(answers[5][chosenAnswers[5]]).append("\n");
+        transportationData.append("7. ").append(questions[6]).append(": ").append(answers[6][chosenAnswers[6]]).append("\n");
+        transportationData.append("Total emissions: ").append(transportationE).append("\n");
+
+        // Prepare Food Data
+        StringBuilder foodData = new StringBuilder("Food:\n");
+        foodData.append("8. ").append(questions[7]).append(": ").append(answers[7][chosenAnswers[7]]).append("\n");
+        if (chosenAnswers[7] == 3) { // Meat-based
+            foodData.append("9. ").append(questions[8]).append(": ").append(answers[8][chosenAnswers[8]]).append("\n");
+            foodData.append("10. ").append(questions[9]).append(": ").append(answers[9][chosenAnswers[9]]).append("\n");
+            foodData.append("11. ").append(questions[10]).append(": ").append(answers[10][chosenAnswers[10]]).append("\n");
+            foodData.append("12. ").append(questions[11]).append(": ").append(answers[11][chosenAnswers[11]]).append("\n");
+        }
+        foodData.append("13. ").append(questions[12]).append(": ").append(answers[12][chosenAnswers[12]]).append("\n");
+        foodData.append("Total emissions: ").append(foodE).append("\n");
+
+        // Prepare Housing Data
+        StringBuilder housingData = new StringBuilder("Housing:\n");
+        housingData.append("14. ").append(questions[13]).append(": ").append(answers[13][chosenAnswers[13]]).append("\n");
+        housingData.append("15. ").append(questions[14]).append(": ").append(answers[14][chosenAnswers[14]]).append("\n");
+        housingData.append("16. ").append(questions[15]).append(": ").append(answers[15][chosenAnswers[15]]).append("\n");
+        housingData.append("17. ").append(questions[16]).append(": ").append(answers[16][chosenAnswers[16]]).append("\n");
+        housingData.append("18. ").append(questions[17]).append(": ").append(answers[17][chosenAnswers[17]]).append("\n");
+        housingData.append("19. ").append(questions[18]).append(": ").append(answers[18][chosenAnswers[18]]).append("\n");
+        housingData.append("20. ").append(questions[19]).append(": ").append(answers[19][chosenAnswers[19]]).append("\n");
+        housingData.append("Total emissions: ").append(housingE).append("\n");
+
+        // Prepare Consumption Data
+        StringBuilder consumptionData = new StringBuilder("Consumption:\n");
+        consumptionData.append("21. ").append(questions[20]).append(": ").append(answers[20][chosenAnswers[20]]).append("\n");
+        consumptionData.append("22. ").append(questions[21]).append(": ").append(answers[21][chosenAnswers[21]]).append("\n");
+        consumptionData.append("23. ").append(questions[22]).append(": ").append(answers[22][chosenAnswers[22]]).append("\n");
+        consumptionData.append("24. ").append(questions[23]).append(": ").append(answers[23][chosenAnswers[23]]).append("\n");
+        consumptionData.append("Total emissions: ").append(consumptionE).append("\n");
+
+        // Bundle and Pass Data
+        Bundle bundle = new Bundle();
+        bundle.putString("transportationData", transportationData.length() > 0 ? transportationData.toString() : "No transportation data.");
+        bundle.putString("housingData", housingData.length() > 0 ? housingData.toString() : "No housing data.");
+        bundle.putString("foodData", foodData.length() > 0 ? foodData.toString() : "No food data.");
+        bundle.putString("consumptionData", consumptionData.length() > 0 ? consumptionData.toString() : "No consumption data.");
+        bundle.putDouble("totalCO2", totalC02);
+
+//         Create and Navigate to Results Fragment
+        FormulaAnswersRecorderActivity resultsFragment = new FormulaAnswersRecorderActivity();
+        resultsFragment.setArguments(bundle);
+
+        if (getActivity() != null) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, resultsFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     private void changeQuestion(int buttonType){
