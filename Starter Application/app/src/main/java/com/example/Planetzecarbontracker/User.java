@@ -20,7 +20,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.firstTime = firstTime;
-        this.ecoTracker = ecoTracker;
         this.totalEmissionsByCategory = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0);
         this.ecoTracker = new EcoTracker(new ArrayList<>(), "test");
     }

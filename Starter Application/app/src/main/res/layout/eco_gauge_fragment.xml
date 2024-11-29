@@ -41,12 +41,39 @@
                 android:layout_width="385dp"
                 android:layout_height="57dp" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/emissionsBreakdown"
+            <TextView
+                android:id="@+id/totalEmissions"
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:fontFamily="@font/archivo_black"
+                android:text="This will show users total emissions"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/emissionsBreakdownText"
+                android:layout_width="match_parent"
+                android:layout_height="63dp"
+                android:fontFamily="@font/archivo_black"
+                android:text="Emissions by category"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/emmisionsBreakdown"
                 android:layout_width="match_parent"
                 android:layout_height="400dp">
 
-            </com.github.mikephil.charting.charts.BarChart>
+            </com.github.mikephil.charting.charts.PieChart>
+
+            <TextView
+                android:id="@+id/emissionsTrendText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/archivo_black"
+                android:text="Emissions trend"
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/emmisionsTrendGraph"

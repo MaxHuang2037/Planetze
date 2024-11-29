@@ -55,7 +55,6 @@ public class DashboardFragment extends Fragment {
                         User u = snapshot.getValue(User.class);
                         if(u.getId().equals(UID)){
                             user = u;
-                            Toast.makeText(getContext(), "WELCOME " + user.getName(), Toast.LENGTH_SHORT).show();
                             welcome_message.setText("Welcome " + user.getName());
                         }
                     }
