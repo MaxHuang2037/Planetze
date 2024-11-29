@@ -42,6 +42,7 @@ public class EcoGaugeFragement extends Fragment{
     private User user;
     private FirebaseDatabase db;
     private DatabaseReference userRef;
+    private String[] categories = {"Transportation", "Food", "Shopping", "Energy"};
 
     @Nullable
     @Override
@@ -138,8 +139,8 @@ public class EcoGaugeFragement extends Fragment{
 
     private ArrayList<PieEntry> pieChartValues(){
         ArrayList<PieEntry> dataVals = new ArrayList<PieEntry>();
-        for(int i = 1; i < 6; i++){
-            dataVals.add(new PieEntry(i, "LOL"));
+        for(int i = 1; i < 5; i++){
+            dataVals.add(new PieEntry(i, categories[i - 1]));
         }
         return dataVals;
     }
