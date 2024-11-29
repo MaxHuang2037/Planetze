@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:ignore="ExtraText">
+    app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:id="@+id/Planetze"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:contentDescription="@null"
+        android:src="@drawable/planetze_logo"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Annual_Carbon_Footprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total annual carbon Footprint: "
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/transportation_emissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="Transportation: " />
+
+    <TextView
+        android:id="@+id/food_emissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:text="Food: " />
+
+    <TextView
+        android:id="@+id/housing_emissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:text="Housing: " />
+
+    <TextView
+        android:id="@+id/consumption_emissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:text="Consumption: " />
+
+    <TextView
+        android:id="@+id/total_emissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Total: " />
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Next" />
+
+</LinearLayout>

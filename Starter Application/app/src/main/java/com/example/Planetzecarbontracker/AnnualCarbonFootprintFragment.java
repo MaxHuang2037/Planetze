@@ -388,7 +388,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         }
         transportationData.append("6. ").append(questions[5]).append(": ").append(answers[5][chosenAnswers[5]]).append("\n");
         transportationData.append("7. ").append(questions[6]).append(": ").append(answers[6][chosenAnswers[6]]).append("\n");
-        transportationData.append("Total emissions: ").append(transportationE).append("\n");
 
         // Prepare Food Data
         StringBuilder foodData = new StringBuilder("Food:\n");
@@ -400,7 +399,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
             foodData.append("12. ").append(questions[11]).append(": ").append(answers[11][chosenAnswers[11]]).append("\n");
         }
         foodData.append("13. ").append(questions[12]).append(": ").append(answers[12][chosenAnswers[12]]).append("\n");
-        foodData.append("Total emissions: ").append(foodE).append("\n");
 
         // Prepare Housing Data
         StringBuilder housingData = new StringBuilder("Housing:\n");
@@ -411,7 +409,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         housingData.append("18. ").append(questions[17]).append(": ").append(answers[17][chosenAnswers[17]]).append("\n");
         housingData.append("19. ").append(questions[18]).append(": ").append(answers[18][chosenAnswers[18]]).append("\n");
         housingData.append("20. ").append(questions[19]).append(": ").append(answers[19][chosenAnswers[19]]).append("\n");
-        housingData.append("Total emissions: ").append(housingE).append("\n");
 
         // Prepare Consumption Data
         StringBuilder consumptionData = new StringBuilder("Consumption:\n");
@@ -419,7 +416,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         consumptionData.append("22. ").append(questions[21]).append(": ").append(answers[21][chosenAnswers[21]]).append("\n");
         consumptionData.append("23. ").append(questions[22]).append(": ").append(answers[22][chosenAnswers[22]]).append("\n");
         consumptionData.append("24. ").append(questions[23]).append(": ").append(answers[23][chosenAnswers[23]]).append("\n");
-        consumptionData.append("Total emissions: ").append(consumptionE).append("\n");
 
         // Bundle and Pass Data
         Bundle bundle = new Bundle();
@@ -427,7 +423,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         bundle.putString("housingData", housingData.length() > 0 ? housingData.toString() : "No housing data.");
         bundle.putString("foodData", foodData.length() > 0 ? foodData.toString() : "No food data.");
         bundle.putString("consumptionData", consumptionData.length() > 0 ? consumptionData.toString() : "No consumption data.");
-        bundle.putDouble("totalCO2", totalC02);
 
         // saving initial data within the user
         User updatedUser = new User(user.getId(), user.getName(), user.getEmail(), true); // change first time later, this is true rn for testing
