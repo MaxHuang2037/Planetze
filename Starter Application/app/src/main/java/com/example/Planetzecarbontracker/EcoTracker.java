@@ -1,6 +1,10 @@
 package com.example.Planetzecarbontracker;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class EcoTracker {
@@ -56,15 +60,58 @@ public class EcoTracker {
         3 -> Energy
 
      */
-//    public double[] getTotalEmissions() {
-//        double[] total_emission = {0, 0, 0, 0};
-//        for (int i = 0; i < emissions.size(); i++) {
-//            Emission emission = emissions.get(i);
-//
-//            total_emission[emission.getCategory()] = emission.getEmission();
-//        }
-//
-//        return total_emission;
-//    }
+    @Exclude
+    public double[] getTotalEmissions() {
+        double[] total_emission = {0, 0, 0, 0};
+        for (int i = 0; i < emissions.size(); i++) {
+            Emission emission = emissions.get(i);
+
+            total_emission[emission.getCategory()] = emission.getEmission();
+        }
+
+        return total_emission;
+    }
+
+    public List<Emission> getEmissionsByMonth(int year, int month) {
+        List<Emission> result = new ArrayList<>();
+
+        for (Emission emission : emissions) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(emission.getDate());
+
+            int emissionYear = calendar.get(Calendar.YEAR);
+            int emissionMonth = calendar.get(Calendar.MONTH);
+            if (emissionYear == year && emissionMonth == month - 1) {
+                result.add(emission);
+            }
+        }
+
+        return result;
+    }
+
+    public List<Emission> getEmissionsByRange(Date startDate, Date endDate) {
+        List<Emission> result = new ArrayList<>();
+
+        for (Emission emission : emissions) {
+            Date emissionDate = emission.getDate();
+            if (!emissionDate.before(startDate) && !emissionDate.after(endDate)) {
+                result.add(emission);
+            }
+        }
+
+        return result;
+    }
+
+    public List<Emission> getEmissionsByDate(Date targetDate) {
+        List<Emission> result = new ArrayList<>();
+
+        for (Emission emission : emissions) {
+            if (emission.getDate().equals(targetDate)) {
+                result.add(emission);
+            }
+        }
+
+        return result;
+    }
 
 }
