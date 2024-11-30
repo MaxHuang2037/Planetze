@@ -2,6 +2,7 @@ package com.example.Planetzecarbontracker;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +37,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class EcoGaugeFragement extends Fragment{
     private FirebaseAuth mAuth;
@@ -100,17 +106,23 @@ public class EcoGaugeFragement extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String range = parentView.getItemAtPosition(position).toString();
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                double emissions = 0;
                 switch (range){
                     case "Daily":
-                        totalEmissions.setText("You’ve emitted 72 kg CO2e today");
+                        emissions = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByDate(year, month, day));
                         break;
                     case "Monthly":
-                        totalEmissions.setText("You’ve emitted 72 kg CO2e this month");
+                        emissions = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByMonth(year, month));
                         break;
                     case "Yearly":
-                        totalEmissions.setText("You’ve emitted 72 kg CO2e this year");
+                        emissions = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByYear(year));
                         break;
                 }
+                totalEmissions.setText("You’ve emitted " + emissions + " kg CO2e today");
             }
 
             @Override

@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -177,7 +178,9 @@ public class ActivityTrackerFragment extends Fragment {
                 String quantity = activity_quantity.getText().toString().trim();
                 if (user != null && !quantity.isEmpty()) {
                     int value = Integer.parseInt(quantity);
-                    Emission new_activity = new Emission(category, question, value, new Date());
+                    Date today = new Date();
+
+                    Emission new_activity = new Emission(category, question, value, today);
                     user.getEcoTracker().addEmission(new_activity);
 
                     userRef = db.getReference("users");
