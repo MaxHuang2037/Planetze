@@ -45,9 +45,7 @@ public class User {
     public void setEcoTracker (EcoTracker ecoTracker) {
         this.ecoTracker = ecoTracker;
     }
-
     public double calculateTotalEmissionsByDateRange(List<Emission> emissions){
-
         double total = 0;
         for(Emission emission : emissions){
             total += emission.getEmission();

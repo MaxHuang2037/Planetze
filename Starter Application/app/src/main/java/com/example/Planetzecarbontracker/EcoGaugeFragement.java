@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,22 +25,18 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.List;
 
 public class EcoGaugeFragement extends Fragment{
     private FirebaseAuth mAuth;
@@ -76,26 +71,8 @@ public class EcoGaugeFragement extends Fragment{
         Spinner timeRange = view.findViewById(R.id.timeRange);
         TextView totalEmissions = view.findViewById(R.id.totalEmissions);
         PieChart emissionsBreakdown = view.findViewById(R.id.emmisionsBreakdown);
-        LineChart emissionsTrend = (LineChart) view.findViewById(R.id.emmisionsTrendGraph);
+        LineChart emissionsTrend = view.findViewById(R.id.emmisionsTrendGraph);
         Button backButton = view.findViewById(R.id.backButton);
-
-        // pie chart
-        PieDataSet pieDataSet = new PieDataSet(pieChartValues(), "Emissions breakdown by category");
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        pieDataSet.setValueTextColor(Color.BLACK);
-        pieDataSet.setValueTextSize(16f);
-
-        // line chart
-        LineDataSet lineDataSet = new LineDataSet(eBValues(), "Emissions Trend");
-        lineDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        lineDataSet.setValueTextColor(Color.BLACK);
-        lineDataSet.setValueTextSize(16f);
-
-        LineData data = new LineData(lineDataSet);
-        emissionsTrend.setData(data);
-
-        PieData pieData = new PieData(pieDataSet);
-        emissionsBreakdown.setData(pieData);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.date_range_array, android.R.layout.simple_spinner_item);
@@ -110,19 +87,58 @@ public class EcoGaugeFragement extends Fragment{
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
+
                 double emissions = 0;
-                switch (range){
-                    case "Daily":
-                        emissions = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByDate(year, month, day));
-                        break;
-                    case "Monthly":
-                        emissions = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByMonth(year, month));
-                        break;
-                    case "Yearly":
-                        emissions = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByYear(year));
-                        break;
+                double[] emissionsByMonth = new double[12];
+                String t = "";
+
+
+                List<Emission> e = Collections.emptyList();
+                if (range.equals("Daily")) {
+                    e = user.getEcoTracker().getEmissionsByDate(year, month, day);
+                    emissions = user.calculateTotalEmissionsByDateRange(e);
+                    t = "today";
                 }
-                totalEmissions.setText("You’ve emitted " + emissions + " kg CO2e today");
+                else if (range.equals("Monthly")) {
+                    e = user.getEcoTracker().getEmissionsByMonth(year, month);
+                    emissions = user.calculateTotalEmissionsByDateRange(e);
+                    t = "this month";
+
+                    for(int i = 0; i < 12; i++){
+                        emissionsByMonth[i] = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByMonth(year, i));
+                    }
+                }
+                else if (range.equals("Yearly")){
+                    e = user.getEcoTracker().getEmissionsByYear(year);
+                    emissions = user.calculateTotalEmissionsByDateRange(e);
+                    t = "this year";
+                }
+                double[] emissionsByCategory = user.getEcoTracker().getTotalEmissionsByCategory(e);
+                // pie chart
+                PieDataSet pieDataSet = new PieDataSet(pieChartValues(emissionsByCategory), "Emissions breakdown by category");
+                pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+                pieDataSet.setValueTextColor(Color.BLACK);
+                pieDataSet.setValueTextSize(16f);
+
+                // line chart
+                LineDataSet lineDataSet = new LineDataSet(eBValues(emissionsByMonth), "Emissions Trend");
+//                lineDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+//                lineDataSet.setValueTextColor(Color.BLACK);
+//                lineDataSet.setValueTextSize(16f);
+
+                LineData data = new LineData(lineDataSet);
+                emissionsTrend.setData(data);
+
+                PieData pieData = new PieData(pieDataSet);
+                emissionsBreakdown.setData(pieData);
+
+                emissionsTrend.notifyDataSetChanged();
+                emissionsTrend.invalidate();
+
+                emissionsBreakdown.notifyDataSetChanged();
+                emissionsBreakdown.invalidate();
+
+                totalEmissions.setText("You’ve emitted " + ((double) Math.round(emissions * 100) / 100) + " kg CO2e " + t);
             }
 
             @Override
@@ -141,18 +157,20 @@ public class EcoGaugeFragement extends Fragment{
         return view;
     }
 
-    private ArrayList<Entry> eBValues(){
+    private ArrayList<Entry> eBValues(double[] emissions){
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
-        for(int i = 0; i < 5; i++){
-            dataVals.add(new Entry(i, i + 1));
+        int i = 0;
+        for(double emission : emissions){
+            dataVals.add(new Entry(i, (float) emission));
+            i += 1;
         }
         return dataVals;
     }
 
-    private ArrayList<PieEntry> pieChartValues(){
+    private ArrayList<PieEntry> pieChartValues(double[] emissions){
         ArrayList<PieEntry> dataVals = new ArrayList<PieEntry>();
-        for(int i = 1; i < 5; i++){
-            dataVals.add(new PieEntry(i, categories[i - 1]));
+        for(int i = 0; i < emissions.length; i++){
+            dataVals.add(new PieEntry((float) emissions[i], categories[i]));
         }
         return dataVals;
     }

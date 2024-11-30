@@ -6,7 +6,6 @@ import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class EcoTracker {
@@ -62,6 +61,18 @@ public class EcoTracker {
         3 -> Energy
 
      */
+    @Exclude
+    public double[] getTotalEmissionsByCategory(List<Emission> emissions) {
+        double[] total_emission = {0, 0, 0, 0};
+        for (int i = 0; i < emissions.size(); i++) {
+            Emission emission = emissions.get(i);
+
+            total_emission[emission.getCategory()] = emission.getEmission();
+        }
+
+        return total_emission;
+    }
+
     @Exclude
     public List<Emission> getEmissionsByYear(int year) {
         List<Emission> result = new ArrayList<>();

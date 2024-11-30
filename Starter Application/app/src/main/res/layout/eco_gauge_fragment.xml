@@ -53,8 +53,9 @@
             <TextView
                 android:id="@+id/emissionsBreakdownText"
                 android:layout_width="match_parent"
-                android:layout_height="63dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/archivo_black"
+                android:padding="15dp"
                 android:text="Emissions by category"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -69,9 +70,10 @@
             <TextView
                 android:id="@+id/emissionsTrendText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/archivo_black"
                 android:text="Emissions trend"
+                android:padding="15dp"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 

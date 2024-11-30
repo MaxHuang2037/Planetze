@@ -178,9 +178,17 @@ public class ActivityTrackerFragment extends Fragment {
                 String quantity = activity_quantity.getText().toString().trim();
                 if (user != null && !quantity.isEmpty()) {
                     int value = Integer.parseInt(quantity);
+                    // testing
                     Date today = new Date();
 
-                    Emission new_activity = new Emission(category, question, value, today);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(today);
+
+                    calendar.add(Calendar.DAY_OF_MONTH, -1);
+
+                    Date tomorrow = calendar.getTime();
+                    // --------------
+                    Emission new_activity = new Emission(category, question, value, tomorrow);
                     user.getEcoTracker().addEmission(new_activity);
 
                     userRef = db.getReference("users");
