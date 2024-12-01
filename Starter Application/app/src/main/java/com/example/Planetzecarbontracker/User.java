@@ -1,5 +1,7 @@
 package com.example.Planetzecarbontracker;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -20,7 +22,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.firstTime = firstTime;
-        this.ecoTracker = ecoTracker;
         this.totalEmissionsByCategory = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0);
         this.ecoTracker = new EcoTracker(new ArrayList<>(), "test");
     }
@@ -43,5 +44,12 @@ public class User {
     }
     public void setEcoTracker (EcoTracker ecoTracker) {
         this.ecoTracker = ecoTracker;
+    }
+    public double calculateTotalEmissionsByDateRange(List<Emission> emissions){
+        double total = 0;
+        for(Emission emission : emissions){
+            total += emission.getEmission();
+        }
+        return total;
     }
 }

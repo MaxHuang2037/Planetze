@@ -1,6 +1,11 @@
 package com.example.Planetzecarbontracker;
 
+import android.util.Log;
+
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class EcoTracker {
@@ -56,15 +61,70 @@ public class EcoTracker {
         3 -> Energy
 
      */
-//    public double[] getTotalEmissions() {
-//        double[] total_emission = {0, 0, 0, 0};
-//        for (int i = 0; i < emissions.size(); i++) {
-//            Emission emission = emissions.get(i);
-//
-//            total_emission[emission.getCategory()] = emission.getEmission();
-//        }
-//
-//        return total_emission;
-//    }
+    @Exclude
+    public double[] getTotalEmissionsByCategory(List<Emission> emissions) {
+        double[] total_emission = {0, 0, 0, 0};
+        for (int i = 0; i < emissions.size(); i++) {
+            Emission emission = emissions.get(i);
+
+            total_emission[emission.getCategory()] += emission.getEmission();
+        }
+
+        return total_emission;
+    }
+
+    @Exclude
+    public List<Emission> getEmissionsByYear(int year) {
+        List<Emission> result = new ArrayList<>();
+
+        for (Emission emission : emissions) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(emission.getDate());
+
+            int emissionYear = calendar.get(Calendar.YEAR);
+            if (emissionYear == year) {
+                result.add(emission);
+            }
+        }
+
+        return result;
+    }
+    @Exclude
+    public List<Emission> getEmissionsByMonth(int year, int month) {
+        List<Emission> result = new ArrayList<>();
+
+        for (Emission emission : emissions) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(emission.getDate());
+
+            int emissionYear = calendar.get(Calendar.YEAR);
+            int emissionMonth = calendar.get(Calendar.MONTH);
+            if (emissionYear == year && emissionMonth == month) {
+                result.add(emission);
+            }
+        }
+
+        return result;
+    }
+    @Exclude
+    public List<Emission> getEmissionsByDate(int year, int month, int day) {
+        List<Emission> result = new ArrayList<>();
+
+        for (Emission emission : emissions) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(emission.getDate());
+
+            int emissionYear = calendar.get(Calendar.YEAR);
+            int emissionMonth = calendar.get(Calendar.MONTH);
+            int emissionsDay = calendar.get(Calendar.DATE);
+
+            Log.v("Dates", year + " " + month + " " + day + " " + emissionYear + " " + emissionMonth + " " + emissionsDay);
+            if (emissionYear == year && emissionMonth == month && emissionsDay == day) {
+                result.add(emission);
+            }
+        }
+
+        return result;
+    }
 
 }

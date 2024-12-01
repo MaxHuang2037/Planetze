@@ -1,7 +1,6 @@
 package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -165,7 +162,7 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         });
 
         questionText = view.findViewById(R.id.questionText);
-        nextButton = view.findViewById(R.id.nextButton);
+        nextButton = view.findViewById(R.id.backButton);
         previousButton = view.findViewById(R.id.previousButton);
         radioGroup = view.findViewById(R.id.choices);
 
@@ -388,7 +385,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         }
         transportationData.append("6. ").append(questions[5]).append(": ").append(answers[5][chosenAnswers[5]]).append("\n");
         transportationData.append("7. ").append(questions[6]).append(": ").append(answers[6][chosenAnswers[6]]).append("\n");
-        transportationData.append("Total emissions: ").append(transportationE).append("\n");
 
         // Prepare Food Data
         StringBuilder foodData = new StringBuilder("Food:\n");
@@ -400,7 +396,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
             foodData.append("12. ").append(questions[11]).append(": ").append(answers[11][chosenAnswers[11]]).append("\n");
         }
         foodData.append("13. ").append(questions[12]).append(": ").append(answers[12][chosenAnswers[12]]).append("\n");
-        foodData.append("Total emissions: ").append(foodE).append("\n");
 
         // Prepare Housing Data
         StringBuilder housingData = new StringBuilder("Housing:\n");
@@ -411,7 +406,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         housingData.append("18. ").append(questions[17]).append(": ").append(answers[17][chosenAnswers[17]]).append("\n");
         housingData.append("19. ").append(questions[18]).append(": ").append(answers[18][chosenAnswers[18]]).append("\n");
         housingData.append("20. ").append(questions[19]).append(": ").append(answers[19][chosenAnswers[19]]).append("\n");
-        housingData.append("Total emissions: ").append(housingE).append("\n");
 
         // Prepare Consumption Data
         StringBuilder consumptionData = new StringBuilder("Consumption:\n");
@@ -419,7 +413,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         consumptionData.append("22. ").append(questions[21]).append(": ").append(answers[21][chosenAnswers[21]]).append("\n");
         consumptionData.append("23. ").append(questions[22]).append(": ").append(answers[22][chosenAnswers[22]]).append("\n");
         consumptionData.append("24. ").append(questions[23]).append(": ").append(answers[23][chosenAnswers[23]]).append("\n");
-        consumptionData.append("Total emissions: ").append(consumptionE).append("\n");
 
         // Bundle and Pass Data
         Bundle bundle = new Bundle();
@@ -427,13 +420,12 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         bundle.putString("housingData", housingData.length() > 0 ? housingData.toString() : "No housing data.");
         bundle.putString("foodData", foodData.length() > 0 ? foodData.toString() : "No food data.");
         bundle.putString("consumptionData", consumptionData.length() > 0 ? consumptionData.toString() : "No consumption data.");
-        bundle.putDouble("totalCO2", totalC02);
 
         // saving initial data within the user
-        User updatedUser = new User(user.getId(), user.getName(), user.getEmail(), true); // change first time later, this is true rn for testing
-        updatedUser.setTotalEmissionsByCategory(Arrays.asList(transportationE, foodE, housingE, consumptionE, totalC02));
+        user.setFirstTime(false);
+        user.setTotalEmissionsByCategory(Arrays.asList(transportationE, foodE, housingE, consumptionE, totalC02));
 
-        userRef.setValue(updatedUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+        userRef.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
 //         Create and Navigate to Results Fragment
@@ -473,7 +465,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
                     break;
                 case 23:
                     nextButton.setText("Next");
-                    // set some loadFragment after
                     break;
             }
             questionNumber -= 1;

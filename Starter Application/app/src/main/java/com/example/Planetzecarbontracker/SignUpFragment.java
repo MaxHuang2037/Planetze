@@ -23,9 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 public class SignUpFragment extends Fragment {
     private EditText name, email, password, confirmPassword;
     private TextView logInRedirect;
@@ -123,7 +120,7 @@ public class SignUpFragment extends Fragment {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getContext(), "Authentication failed.",
+                            Toast.makeText(getContext(), "Something went wrong. Please try again.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

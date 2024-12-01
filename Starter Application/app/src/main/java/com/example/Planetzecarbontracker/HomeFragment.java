@@ -22,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HomeFragment extends Fragment {
     private FirebaseAuth mAuth;
-
     private User user;
     private FirebaseDatabase db;
     private DatabaseReference userRef;
@@ -37,7 +36,6 @@ public class HomeFragment extends Fragment {
 
         // for testing
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         db = FirebaseDatabase.getInstance();
@@ -48,7 +46,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
-
+                    Toast.makeText(getContext(), "Welcome, " + user.getName(), Toast.LENGTH_SHORT).show();
                     if(user.getFirstTime()){
                         loadFragment(new AnnualCarbonFootprintFragment());
                     } else {

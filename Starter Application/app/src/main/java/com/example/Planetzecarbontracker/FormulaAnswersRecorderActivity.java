@@ -25,8 +25,7 @@ public class FormulaAnswersRecorderActivity extends Fragment {
         TextView foodAnswers = view.findViewById(R.id.foodAnswers);
         TextView housingAnswers = view.findViewById(R.id.housingAnswers);
         TextView consumptionAnswers = view.findViewById(R.id.consumptionAnswers);
-        TextView totalEmissions = view.findViewById(R.id.totalEmissions);
-        Button backButton = view.findViewById(R.id.backButton);
+        Button nextButton = view.findViewById(R.id.nextButton);
 
         // Retrieve data passed via Bundle
         Bundle bundle = getArguments();
@@ -35,28 +34,25 @@ public class FormulaAnswersRecorderActivity extends Fragment {
             String housingData = bundle.getString("housingData", "No data available for housing.");
             String foodData = bundle.getString("foodData", "No data available for food.");
             String consumptionData = bundle.getString("consumptionData", "No data available for consumption.");
-            double totalCO2 = bundle.getDouble("totalCO2", 0);
 
             // Display data
             transportationAnswers.setText(transportationData);
             housingAnswers.setText(housingData);
             foodAnswers.setText(foodData);
             consumptionAnswers.setText(consumptionData);
-            totalEmissions.setText("Total CO2 Emissions: " + (totalCO2 / 1000.0) + " Tons");
         } else {
             transportationAnswers.setText("No data available for transportation.");
             housingAnswers.setText("No data available for housing.");
             foodAnswers.setText("No data available for food.");
             consumptionAnswers.setText("No data available for consumption.");
-            totalEmissions.setText("Total CO2 Emissions: 0 Tons");
         }
 
         // Set Back button functionality
-        backButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // change to emissions overview page
-                loadFragment(new DashboardFragment());
+                loadFragment(new AnnualFootPrint());
             }
         });
 

@@ -104,7 +104,6 @@ public class LogInFragment extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         if(user.isEmailVerified()){
-                            Toast.makeText(getContext(), "LOGGED IN", Toast.LENGTH_SHORT).show();
                             checkFirstTime();
                         } else {
                             Toast.makeText(getContext(), "Account not verified. Please check your email", Toast.LENGTH_SHORT).show();
@@ -125,11 +124,12 @@ public class LogInFragment extends Fragment {
         //Read from the database
         String UID = mAuth.getCurrentUser().getUid();
         db = FirebaseDatabase.getInstance();
-        userRef = db.getReference("users").child(mAuth.getUid());
+        userRef = db.getReference("users").child(UID);
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                Toast.makeText(getContext(), "Welcome, " + user.getName(), Toast.LENGTH_SHORT).show();
                 if(user.getFirstTime()){
                     loadFragment(new AnnualCarbonFootprintFragment());
                 } else {

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,8 +29,7 @@ public class ForgotPasswordActivity extends Fragment {
 
         // Reference UI elements
         Button buttonResendLink = view.findViewById(R.id.btnSendResetLink);
-        EditText editTextEmail = view.findViewById(R.id.editTextEmail);
-        TextView tvForgotPasswordTitle = view.findViewById(R.id.tvForgotPasswordTitle);
+        EditText editTextEmail = view.findViewById(R.id.editTextTextEmailAddress);
         Button backButton = view.findViewById(R.id.backButton);
 
         // Set OnClickListener for the "Send Reset Link" button
