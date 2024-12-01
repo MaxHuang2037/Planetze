@@ -425,10 +425,10 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         bundle.putString("consumptionData", consumptionData.length() > 0 ? consumptionData.toString() : "No consumption data.");
 
         // saving initial data within the user
-        User updatedUser = new User(user.getId(), user.getName(), user.getEmail(), true); // change first time later, this is true rn for testing
-        updatedUser.setTotalEmissionsByCategory(Arrays.asList(transportationE, foodE, housingE, consumptionE, totalC02));
+        user.setFirstTime(false);
+        user.setTotalEmissionsByCategory(Arrays.asList(transportationE, foodE, housingE, consumptionE, totalC02));
 
-        userRef.setValue(updatedUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+        userRef.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
 //         Create and Navigate to Results Fragment
@@ -468,7 +468,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
                     break;
                 case 23:
                     nextButton.setText("Next");
-                    // set some loadFragment after
                     break;
             }
             questionNumber -= 1;

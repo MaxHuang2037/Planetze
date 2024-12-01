@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -33,9 +34,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class EcoGaugeFragement extends Fragment{
@@ -73,64 +78,106 @@ public class EcoGaugeFragement extends Fragment{
         PieChart emissionsBreakdown = view.findViewById(R.id.emmisionsBreakdown);
         LineChart emissionsTrend = view.findViewById(R.id.emmisionsTrendGraph);
         Button backButton = view.findViewById(R.id.backButton);
+        TextView emissionsTrendText = view.findViewById(R.id.emissionsTrendText);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.date_range_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeRange.setAdapter(adapter);
 
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
         timeRange.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String range = parentView.getItemAtPosition(position).toString();
-                Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
 
                 double emissions = 0;
-                double[] emissionsByMonth = new double[12];
                 String t = "";
-
+                int type = 0;
 
                 List<Emission> e = Collections.emptyList();
                 if (range.equals("Daily")) {
+                    type = 0;
                     e = user.getEcoTracker().getEmissionsByDate(year, month, day);
                     emissions = user.calculateTotalEmissionsByDateRange(e);
                     t = "today";
+                    emissionsTrendText.setText("Emissions trend for past 7 days");
                 }
                 else if (range.equals("Monthly")) {
+                    type = 1;
                     e = user.getEcoTracker().getEmissionsByMonth(year, month);
                     emissions = user.calculateTotalEmissionsByDateRange(e);
                     t = "this month";
-
-                    for(int i = 0; i < 12; i++){
-                        emissionsByMonth[i] = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByMonth(year, i));
-                    }
+                    emissionsTrendText.setText("Emissions trend this month");
                 }
                 else if (range.equals("Yearly")){
+                    type = 2;
                     e = user.getEcoTracker().getEmissionsByYear(year);
                     emissions = user.calculateTotalEmissionsByDateRange(e);
                     t = "this year";
+                    emissionsTrendText.setText("Emissions trend this year");
                 }
                 double[] emissionsByCategory = user.getEcoTracker().getTotalEmissionsByCategory(e);
                 // pie chart
-                PieDataSet pieDataSet = new PieDataSet(pieChartValues(emissionsByCategory), "Emissions breakdown by category");
+                PieDataSet pieDataSet = new PieDataSet(pieChartValues(emissionsByCategory), "");
+
                 pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-                pieDataSet.setValueTextColor(Color.BLACK);
                 pieDataSet.setValueTextSize(16f);
 
                 // line chart
-                LineDataSet lineDataSet = new LineDataSet(eBValues(emissionsByMonth), "Emissions Trend");
-//                lineDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-//                lineDataSet.setValueTextColor(Color.BLACK);
-//                lineDataSet.setValueTextSize(16f);
+
+                // past 7 days
+                double[] emissionsByWeek = new double[7];
+
+                for(int i = 0; i < 7; i++){
+                    Date today = new Date();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(today);
+
+                    calendar.add(Calendar.DAY_OF_MONTH, i - 6);
+                    emissionsByWeek[i] = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
+                }
+
+                // this month
+                int totalDaysThisMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                double[] emissionsThisMonth = new double[totalDaysThisMonth];
+
+                for(int i = 0; i < totalDaysThisMonth; i++){
+                    emissionsThisMonth[i] = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByDate(year, month, i + 1));
+                }
+
+                // this year
+                double[] emissionsByMonth = new double[12];
+                for(int i = 0; i < 12; i++){
+                    emissionsByMonth[i] = user.calculateTotalEmissionsByDateRange(user.getEcoTracker().getEmissionsByMonth(year, i));
+                }
+
+                double[][] emissionLists = {emissionsByWeek, emissionsThisMonth, emissionsByMonth};
+
+                LineDataSet lineDataSet = new LineDataSet(eBValues(emissionLists[type]), "Emissions in KG");
+                lineDataSet.setColors(Color.parseColor("#009999"));
+                lineDataSet.setValueTextSize(0f);
 
                 LineData data = new LineData(lineDataSet);
                 emissionsTrend.setData(data);
+                emissionsTrend.getDescription().setEnabled(false);
+                emissionsTrend.getXAxis().setTextSize(10f);
+                emissionsTrend.getAxisLeft().setTextSize(14f);
+                emissionsTrend.getAxisRight().setEnabled(false);
+                Legend l = emissionsTrend.getLegend();
+                l.setTextSize(15f);
 
                 PieData pieData = new PieData(pieDataSet);
                 emissionsBreakdown.setData(pieData);
+                emissionsBreakdown.setEntryLabelColor(Color.BLACK);
+                emissionsBreakdown.setEntryLabelTextSize(0f);
+                emissionsBreakdown.getDescription().setEnabled(false);
+                Legend l2 = emissionsBreakdown.getLegend();
+                l2.setTextSize(15f);
 
                 emissionsTrend.notifyDataSetChanged();
                 emissionsTrend.invalidate();
@@ -161,7 +208,7 @@ public class EcoGaugeFragement extends Fragment{
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
         int i = 0;
         for(double emission : emissions){
-            dataVals.add(new Entry(i, (float) emission));
+            dataVals.add(new Entry(i+ 1, (float) emission));
             i += 1;
         }
         return dataVals;
@@ -170,6 +217,7 @@ public class EcoGaugeFragement extends Fragment{
     private ArrayList<PieEntry> pieChartValues(double[] emissions){
         ArrayList<PieEntry> dataVals = new ArrayList<PieEntry>();
         for(int i = 0; i < emissions.length; i++){
+            if(emissions[i] == 0) continue;
             dataVals.add(new PieEntry((float) emissions[i], categories[i]));
         }
         return dataVals;

@@ -67,7 +67,7 @@ public class EcoTracker {
         for (int i = 0; i < emissions.size(); i++) {
             Emission emission = emissions.get(i);
 
-            total_emission[emission.getCategory()] = emission.getEmission();
+            total_emission[emission.getCategory()] += emission.getEmission();
         }
 
         return total_emission;

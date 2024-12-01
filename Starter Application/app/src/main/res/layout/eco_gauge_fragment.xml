@@ -63,7 +63,8 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/emmisionsBreakdown"
                 android:layout_width="match_parent"
-                android:layout_height="400dp">
+                android:layout_height="400dp"
+                android:padding="15dp">
 
             </com.github.mikephil.charting.charts.PieChart>
 
@@ -72,15 +73,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/archivo_black"
-                android:text="Emissions trend"
                 android:padding="15dp"
+                android:text="Emissions trend this year"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/emmisionsTrendGraph"
                 android:layout_width="match_parent"
-                android:layout_height="400dp">
+                android:layout_height="400dp"
+                android:layout_marginTop="15dp">
 
             </com.github.mikephil.charting.charts.LineChart>
 

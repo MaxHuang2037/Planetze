@@ -104,7 +104,6 @@ public class LogInFragment extends Fragment {
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         if(user.isEmailVerified()){
-                            Toast.makeText(getContext(), "LOGGED IN", Toast.LENGTH_SHORT).show();
                             checkFirstTime();
                         } else {
                             Toast.makeText(getContext(), "Account not verified. Please check your email", Toast.LENGTH_SHORT).show();

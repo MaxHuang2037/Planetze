@@ -48,8 +48,7 @@ public class HomeFragment extends Fragment {
                     user = dataSnapshot.getValue(User.class);
                     Toast.makeText(getContext(), "Welcome, " + user.getName(), Toast.LENGTH_SHORT).show();
                     if(user.getFirstTime()){
-                        loadFragment(new DashboardFragment()); // remove later
-//                        loadFragment(new AnnualCarbonFootprintFragment());
+                        loadFragment(new AnnualCarbonFootprintFragment());
                     } else {
                         loadFragment(new DashboardFragment());
                     }
