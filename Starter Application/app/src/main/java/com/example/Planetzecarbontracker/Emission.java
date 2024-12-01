@@ -11,11 +11,11 @@ public class Emission {
     private Date date;
     private final String[] questions = {
 
-            "Drive Personal Vehicle (gasoline)", "Drive Personal Vehicle (Diesel)",
-            "Drive Personal Vehicle (hybrid)", "Drive Personal Vehicle (Electric)",
-            "Take Public Transportation (bus)", "Take Public Transportation (train)",
-            "Take Public Transportation (subway)", "Cycling or Walking",
-            "Flight (Short-Haul)", "Flight (Long-Haul",
+            "Drive Personal Vehicle (Gasoline)", "Drive Personal Vehicle (Diesel)",
+            "Drive Personal Vehicle (Hybrid)", "Drive Personal Vehicle (Electric)",
+            "Take Public Transportation (Bus)", "Take Public Transportation (Train)",
+            "Take Public Transportation (Subway)", "Cycling or Walking",
+            "Flight (Short-Haul)", "Flight (Long-Haul)",
             "Meal (beef)", "Meal (pork)",
             "Meal (chicken)", "Meal (fish)", "Meal (plant-based)",
             "Buy New Clothes",
@@ -95,11 +95,9 @@ public class Emission {
         return category_key;
     }
 
-
     public String getQuestion() {
         return questions[question_key];
     }
-
 
     public void setCategory(int category) {
         this.category_key = category;
@@ -125,4 +123,19 @@ public class Emission {
         return value;
     }
 
+    public int getQuestion_key() {
+        return question_key;
+    }
+
+    public void setQuestion_key(int question_key) {
+        this.question_key = question_key;
+    }
+
+    public int getCategory_key() {
+        return category_key;
+    }
+
+    public void setCategory_key(int category_key) {
+        this.category_key = category_key;
+    }
 }

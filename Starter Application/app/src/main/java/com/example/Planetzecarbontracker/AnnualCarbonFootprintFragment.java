@@ -1,7 +1,6 @@
 package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -165,7 +162,7 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         });
 
         questionText = view.findViewById(R.id.questionText);
-        nextButton = view.findViewById(R.id.nextButton);
+        nextButton = view.findViewById(R.id.backButton);
         previousButton = view.findViewById(R.id.previousButton);
         radioGroup = view.findViewById(R.id.choices);
 
@@ -425,10 +422,10 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         bundle.putString("consumptionData", consumptionData.length() > 0 ? consumptionData.toString() : "No consumption data.");
 
         // saving initial data within the user
-        User updatedUser = new User(user.getId(), user.getName(), user.getEmail(), true); // change first time later, this is true rn for testing
-        updatedUser.setTotalEmissionsByCategory(Arrays.asList(transportationE, foodE, housingE, consumptionE, totalC02));
+        user.setFirstTime(false);
+        user.setTotalEmissionsByCategory(Arrays.asList(transportationE, foodE, housingE, consumptionE, totalC02));
 
-        userRef.setValue(updatedUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+        userRef.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
 //         Create and Navigate to Results Fragment
@@ -468,7 +465,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
                     break;
                 case 23:
                     nextButton.setText("Next");
-                    // set some loadFragment after
                     break;
             }
             questionNumber -= 1;

@@ -25,7 +25,7 @@ public class FormulaAnswersRecorderActivity extends Fragment {
         TextView foodAnswers = view.findViewById(R.id.foodAnswers);
         TextView housingAnswers = view.findViewById(R.id.housingAnswers);
         TextView consumptionAnswers = view.findViewById(R.id.consumptionAnswers);
-        Button backButton = view.findViewById(R.id.backButton);
+        Button nextButton = view.findViewById(R.id.nextButton);
 
         // Retrieve data passed via Bundle
         Bundle bundle = getArguments();
@@ -48,7 +48,7 @@ public class FormulaAnswersRecorderActivity extends Fragment {
         }
 
         // Set Back button functionality
-        backButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // change to emissions overview page
