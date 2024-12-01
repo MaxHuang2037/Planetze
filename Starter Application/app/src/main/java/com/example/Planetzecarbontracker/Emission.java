@@ -95,11 +95,9 @@ public class Emission {
         return category_key;
     }
 
-
     public String getQuestion() {
         return questions[question_key];
     }
-
 
     public void setCategory(int category) {
         this.category_key = category;
@@ -125,4 +123,19 @@ public class Emission {
         return value;
     }
 
+    public int getQuestion_key() {
+        return question_key;
+    }
+
+    public void setQuestion_key(int question_key) {
+        this.question_key = question_key;
+    }
+
+    public int getCategory_key() {
+        return category_key;
+    }
+
+    public void setCategory_key(int category_key) {
+        this.category_key = category_key;
+    }
 }
