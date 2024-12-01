@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    android:visibility="visible"
-    tools:context=".AddItemFragment">
+    android:visibility="visible">
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:layout_width="210dp"
+        android:layout_width="275dp"
         android:layout_height="50dp"
         android:background="@drawable/rounded_edit_text"
         android:ems="10"
@@ -18,7 +17,7 @@
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +25,7 @@
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
-        android:layout_width="210dp"
+        android:layout_width="275dp"
         android:layout_height="50dp"
         android:background="@drawable/rounded_edit_text"
         android:hint="Email"
