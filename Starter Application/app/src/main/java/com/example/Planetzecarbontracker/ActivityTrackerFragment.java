@@ -1,5 +1,6 @@
 package com.example.Planetzecarbontracker;
 
+import android.app.DatePickerDialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -40,12 +41,15 @@ public class ActivityTrackerFragment extends Fragment {
     private LinearLayout question_details_wrap;
     private LinearLayout question_buttons_wrap;
     private EditText activity_quantity;
+    private EditText date_picker;
     private Button submit_activity;
     private Spinner activity_dropdown;
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference userRef;
     private User user;
+    private Date tracking_date = new Date();
+    private int selected_index = 0;
     private final String[][] actions = {
             {"Drive personal vehicle", "Take public transportation", "Cycling or walking", "Flight"},
             {"Had A Meal"},
@@ -56,7 +60,7 @@ public class ActivityTrackerFragment extends Fragment {
     private final String[][] dropdown_questions = {
             {"Gasoline", "Diesel", "Hybrid", "Electric"},
             {"Bus", "Train", "Subway"},
-            {"Walking", "Cycling"},
+            {"Walking or Cycling"},
             {"Short-Haul (Less than 1500km)", "Long-Haul (More than 1500km)"},
             {"Beef", "Pork", "Chicken", "Fish", "Plant-Based"},
             {"Clothing"},
@@ -89,8 +93,7 @@ public class ActivityTrackerFragment extends Fragment {
         activity_dropdown = view.findViewById(R.id.activity_dropdown);
         activity_quantity = view.findViewById(R.id.activity_quantity);
         submit_activity = view.findViewById(R.id.submit_activity);
-
-        Log.d("ExampleFragment", "onCreateView: Fragment is being created");
+        date_picker = view.findViewById(R.id.date_picker);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -118,6 +121,44 @@ public class ActivityTrackerFragment extends Fragment {
         } else {
             loadFragment(new HomeFragment());
         }
+
+        // Create a Calendar instance to manage the date
+        Calendar calendar = Calendar.getInstance();
+        date_picker.setText(String.format("%d/%d/%d", calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR)));
+
+        // Set up the EditText click listener to open the DatePickerDialog
+        date_picker.setOnClickListener(v -> {
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            // Show the DatePickerDialog
+            new DatePickerDialog(getContext(), (picker, selectedYear, selectedMonth, selectedDay) -> {
+                // Update the Calendar instance with the selected date
+                calendar.set(selectedYear, selectedMonth, selectedDay);
+
+                // Convert Calendar to Date object
+                tracking_date = calendar.getTime();
+
+                // Format the selected date and set it in the EditText
+                String dateString = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                date_picker.setText(dateString);
+                // You can perform additional actions with the Date object here
+            }, year, month, day).show();
+        });
+
+        activity_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Get the selected index
+                int selectedIndex = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Handle case when no item is selected
+            }
+        });
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +198,10 @@ public class ActivityTrackerFragment extends Fragment {
         return view;
     }
 
+    public void loadActivities() {
+
+    }
+
     public void loadQuestion(int category, int question) {
         question_buttons_wrap.setVisibility(View.GONE);
         question_details_wrap.setVisibility(View.VISIBLE);
@@ -179,16 +224,7 @@ public class ActivityTrackerFragment extends Fragment {
                 if (user != null && !quantity.isEmpty()) {
                     int value = Integer.parseInt(quantity);
                     // testing
-                    Date today = new Date();
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(today);
-
-                    calendar.add(Calendar.DAY_OF_MONTH, -1);
-
-                    Date tomorrow = calendar.getTime();
-                    // --------------
-                    Emission new_activity = new Emission(category, question, value, tomorrow);
+                    Emission new_activity = new Emission(category, getDropdownQuestionIndex(getQuestionIndex(category, question), selected_index), value, tracking_date);
                     user.getEcoTracker().addEmission(new_activity);
 
                     userRef = db.getReference("users");
@@ -230,13 +266,24 @@ public class ActivityTrackerFragment extends Fragment {
         }
     }
 
-    public int getQuestionIndex (int category, int question) {
+    public int getQuestionIndex(int category, int question) {
         int counter = 0;
         for (int i = 0; i < actions.length; i++) {
             if (category == i) {
                 return counter + question;
             }
             counter += actions[i].length;
+        }
+        return -1;
+    }
+
+    public int getDropdownQuestionIndex(int question, int selection) {
+        int counter = 0;
+        for (int i = 0; i < dropdown_questions.length; i++) {
+            if (question == i) {
+                return counter + selection;
+            }
+            counter += dropdown_questions[i].length;
         }
         return -1;
     }

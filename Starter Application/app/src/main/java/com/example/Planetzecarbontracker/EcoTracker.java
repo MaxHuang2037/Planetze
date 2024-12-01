@@ -117,6 +117,8 @@ public class EcoTracker {
             int emissionYear = calendar.get(Calendar.YEAR);
             int emissionMonth = calendar.get(Calendar.MONTH);
             int emissionsDay = calendar.get(Calendar.DATE);
+
+            Log.v("Dates", year + " " + month + " " + day + " " + emissionYear + " " + emissionMonth + " " + emissionsDay);
             if (emissionYear == year && emissionMonth == month && emissionsDay == day) {
                 result.add(emission);
             }
