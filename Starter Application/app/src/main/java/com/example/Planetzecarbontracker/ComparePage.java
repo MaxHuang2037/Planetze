@@ -13,6 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -174,6 +181,10 @@ public class ComparePage extends Fragment {
         countryFootprintMap.put("Zambia", 0.2);
         countryFootprintMap.put("Zimbabwe", 0.8);
     }
+    private FirebaseAuth mAuth;
+    private User user;
+    private FirebaseDatabase db;
+    private DatabaseReference userRef;
 
     @Nullable
     @Override
@@ -184,14 +195,29 @@ public class ComparePage extends Fragment {
         Button backButton = view.findViewById(R.id.back_button);
         Button mainButton = view.findViewById(R.id.main_button);
 
-        if (getArguments() != null) {
-            userFootprint = getArguments().getDouble("userFootprint", 0.0);
-            selectedCountry = getArguments().getString("selectedCountry");
-            selectedCountryFootprint = getCountryFootprint(selectedCountry);
-        }
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
 
-        // Display comparison result
-        displayComparisonResult();
+        String UID = mAuth.getCurrentUser().getUid();
+        db = FirebaseDatabase.getInstance();
+        userRef = db.getReference("users").child(UID);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                if (getArguments() != null) {
+                    userFootprint = getArguments().getDouble("userFootprint", user.getTotalEmissionsByCategory().get(4)/1000);
+                    selectedCountry = getArguments().getString("selectedCountry");
+                    selectedCountryFootprint = getCountryFootprint(selectedCountry);
+                }
+                // Display comparison result
+                displayComparisonResult();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+            }
+        });
 
         // Set up back button to navigate back to CountrySelect fragment
         backButton.setOnClickListener(new View.OnClickListener() {
