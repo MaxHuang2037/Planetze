@@ -48,44 +48,45 @@ public class Emission {
                 return value * 0.05;
             case 4:
             case 5:
-                return value * 0.72; // assume 246 kg per hour divided by 365 days
             case 6:
-                return 0;
+                return value * 0.72; // assume 246 kg per hour divided by 365 days
             case 7:
-                return value * 225;
+                return 0;
             case 8:
-                return value * 825; // assume 225 and 825 are values for each flight
+                return value * 225;
             case 9:
-                return value * 6.85;
+                return value * 825; // assume 225 and 825 are values for each flight
             case 10:
-                return value * 3.97;
+                return value * 6.85;
             case 11:
-                return value * 2.6;
+                return value * 3.97;
             case 12:
-                return value * 2.19; // assume daily consumption divided by 365 days
+                return value * 2.6;
             case 13:
-                return value * 2.74; // assume vegetarian diet
+                return value * 2.19; // assume daily consumption divided by 365 days
             case 14:
-                return value * 5; // assume clothing item is 5kg per item
+                return value * 2.74; // assume vegetarian diet
             case 15:
-                return value * 300; // assume each electronic device is 300kg
+                return value * 5; // assume clothing item is 5kg per item
             case 16:
+                return value * 300; // assume each electronic device is 300kg
             case 17:
             case 18:
+            case 19:
 
                 // Use housing values to approximate energy bill to emissions
 
                 if (value < 50) {
-                    return 200 * value;
+                    return 34;
                 } else if (value < 100) {
-                    return 400 * value;
+                    return 67;
                 } else if (value < 150) {
-                    return 1200 * value;
+                    return 100;
                 } else if (value < 200){
-                    return 1700 * value;
+                    return 142;
                 }
 
-                return 2300 * value;
+                return 192 * value;
         }
 
         return 0;
