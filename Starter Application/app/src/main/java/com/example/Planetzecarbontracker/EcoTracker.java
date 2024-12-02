@@ -31,8 +31,8 @@ public class EcoTracker {
         emissions.add(emission);
     }
 
-    public void removeEmission(int index) {
-        emissions.remove(index);
+    public void removeEmission(Emission emission) {
+        emissions.remove(emission);
     }
 
     public List<Emission> getEmissions () {
