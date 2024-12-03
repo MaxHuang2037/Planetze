@@ -2,7 +2,9 @@ package com.example.Planetzecarbontracker;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 public class HabitTracker {
 
@@ -19,7 +21,7 @@ public class HabitTracker {
             {"Purchase less than 3 clothing items per month", "Purchase less than 3 electronics per year"},
             {"Track your monthly electricity bill to be more cautious of your energy usage"}
     };
-    private boolean[] tracking = {false, false, false, false, false, false, false};
+    private ArrayList<Boolean> tracking = new ArrayList<>(Collections.nCopies(7, false));
     public HabitTracker() {}
 
     //Habits have too different requirements, a case by case check is required
@@ -103,14 +105,14 @@ public class HabitTracker {
     }
 
     public void toggleTracking(int index) {
-        tracking[index] = !tracking[index];
+        tracking.set(index, !tracking.get(index));
     }
 
-    public boolean[] getTracking() {
+    public ArrayList<Boolean> getTracking() {
         return tracking;
     }
 
-    public void setTracking(boolean[] tracking) {
+    public void setTracking(ArrayList<Boolean> tracking) {
         this.tracking = tracking;
     }
 }
