@@ -100,7 +100,7 @@ public class Emission {
                     return 142;
                 }
 
-                tempValue = 192 * value;
+                tempValue = 192;
                 break;
         }
 
