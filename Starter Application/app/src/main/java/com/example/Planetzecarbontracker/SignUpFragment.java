@@ -64,7 +64,7 @@ public class SignUpFragment extends Fragment {
         logInRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new LogInFragment());
+                loadFragment(new LogInView());
             }
         });
 

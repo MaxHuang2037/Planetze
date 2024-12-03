@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class LogInFragment extends Fragment implements LoginView {
+public class LogInView extends Fragment {
     private EditText email, password;
     private Button loginButton;
     private TextView signUpRedirect, forgotPasswordButton;
@@ -48,32 +48,18 @@ public class LogInFragment extends Fragment implements LoginView {
         return view;
     }
 
-    @Override
-    public void showLoading() {
-        // Show loading indicator (e.g., a ProgressBar)
-    }
-
-    @Override
-    public void hideLoading() {
-        // Hide loading indicator
-    }
-
-    @Override
     public void showErrorMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
     public void showWelcomeMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
     public void navigateToDashboard() {
         loadFragment(new DashboardFragment());
     }
 
-    @Override
     public void navigateToAnnualCarbonFootprint() {
         loadFragment(new AnnualCarbonFootprintFragment());
     }

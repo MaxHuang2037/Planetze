@@ -2,10 +2,10 @@ package com.example.Planetzecarbontracker;
 
 
 public class LoginPresenter {
-    private final LoginView view;
+    private final LogInView view;
     private final LoginModel model;
 
-    public LoginPresenter(LoginView view, LoginModel model) {
+    public LoginPresenter(LogInView view, LoginModel model) {
         this.view = view;
         this.model = model;
     }
@@ -17,14 +17,12 @@ public class LoginPresenter {
             return;
         }
 
-        view.showLoading();
         model.authenticate(email, password, new LoginModel.LoginCallback() {
             @Override
             public void onSuccess(String uid) {
                 model.checkFirstTime(uid, new LoginModel.UserCallback() {
                     @Override
                     public void onUserLoaded(User user) {
-                        view.hideLoading();
                         view.showWelcomeMessage("Welcome, " + user.getName());
                         if (user.getFirstTime()) {
                             view.navigateToAnnualCarbonFootprint();
@@ -35,7 +33,6 @@ public class LoginPresenter {
 
                     @Override
                     public void onError(String message) {
-                        view.hideLoading();
                         view.showErrorMessage(message);
                     }
                 });
@@ -43,7 +40,6 @@ public class LoginPresenter {
 
             @Override
             public void onError(String message) {
-                view.hideLoading();
                 view.showErrorMessage(message);
             }
         });
