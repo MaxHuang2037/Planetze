@@ -29,6 +29,7 @@ public class EcoTrackerFragment extends Fragment {
 
     private Button open_tracker;
     private Button back_button;
+    private Button open_habits;
     private TextView daily_emission;
     private LinearLayout activities_container;
     private FirebaseAuth mAuth;
@@ -44,6 +45,7 @@ public class EcoTrackerFragment extends Fragment {
         daily_emission = view.findViewById(R.id.emissionsValue);
         back_button = view.findViewById(R.id.return_to_dashboard);
         open_tracker = view.findViewById(R.id.view_activities_button);
+        open_habits = view.findViewById(R.id.view_habits_button);
 
         activities_container = view.findViewById(R.id.activities_container);
 
@@ -86,6 +88,13 @@ public class EcoTrackerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 loadFragment(new ActivityTrackerFragment());
+            }
+        });
+
+        open_habits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new HabitTrackerFragment());
             }
         });
 

@@ -6,6 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+
+    <ImageView
+        android:id="@+id/dashboard_image"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/planetze_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/title"
         android:layout_width="200dp"
@@ -21,16 +33,165 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <ImageView
-        android:id="@+id/dashboard_image"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/planetze_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:id="@+id/habits_wrap"
+        app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/habits_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp" />
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/filters_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/habits_wrap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/search_habit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="Search..."
+            android:padding="10dp"
+            android:inputType="text"
+            android:drawablePadding="8dp"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:layout_marginEnd="8dp"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"/>
+
+        <Spinner
+            android:id="@+id/category_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:padding="8dp"
+            android:background="@drawable/border_radius"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"/>
+
+        <Spinner
+            android:id="@+id/impact_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:background="@drawable/border_radius"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:id="@+id/select_habit_wrap"
+        app:layout_constraintTop_toBottomOf="@id/filters_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/habits_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp" />
+
+    </ScrollView>
+
+
+    <TextView
+        android:id="@+id/suggested_habit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:padding="8dp"
+        android:text="Recommended habit"
+        app:layout_constraintTop_toBottomOf="@id/select_habit_wrap"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="0dp"
+        android:paddingHorizontal="16dp"
+        android:gravity="start"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@id/suggested_habit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/recommended_habit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingEnd="8dp">
+
+            <TextView
+                android:id="@+id/recommended_habit_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:paddingBottom="4dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/recommended_habit_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="8dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/habit_toggle_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:textColor="@android:color/white"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:minHeight="32dp"
+            android:minWidth="64dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/primary_accent"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/back"
+        android:textAlignment="center"
+        android:textSize="15dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/penguin_image"/>
 
     <ImageView
         android:id="@+id/penguin_image"

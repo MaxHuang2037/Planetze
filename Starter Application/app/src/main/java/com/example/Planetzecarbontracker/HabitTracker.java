@@ -8,19 +8,21 @@ import java.util.Collections;
 
 public class HabitTracker {
 
-    private final String[][] habits = {
+    final String[][] habits = {
             {"Increase time spent walking", "Increase time spent cycling"},
             {"Have a plant based meal", "Have a plant based diet"},
             {"Limit clothing purchases", "Limit electronic purchases"},
             {"Track your energy bills"}
     };
 
-    private final String[][] habit_descriptions = {
+    final String[][] habit_descriptions = {
             {"Walk at least 1 hour per day", "Cycle for at least 1 hour per day"},
             {"Have at least 1 plant based meal per day", "Have only plant based meals (2 min per day)"},
             {"Purchase less than 3 clothing items per month", "Purchase less than 3 electronics per year"},
             {"Track your monthly electricity bill to be more cautious of your energy usage"}
     };
+
+    final int[] habit_intensity = { 1, 1, 3, 5, 2, 4, 0};
     private ArrayList<Boolean> tracking = new ArrayList<>(Collections.nCopies(7, false));
     public HabitTracker() {}
 
