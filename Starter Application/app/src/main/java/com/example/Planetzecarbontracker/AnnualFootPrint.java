@@ -74,7 +74,7 @@ public class AnnualFootPrint extends Fragment {
         housingTextView.setText("Housing: " + totalEmissionsByCategory.get(2) + " kg CO2e");
         consumptionTextView.setText("Consumption: " + totalEmissionsByCategory.get(3) + " kg CO2e");
 
-        totalTextView.setText("Total: " + totalEmissionsByCategory.get(4) / 1000 + " tons of CO2e per year");
+        totalTextView.setText("Total: " + ((double) Math.round(totalEmissionsByCategory.get(4) / 1000 * 100) / 100) + " tons of CO2e per year");
     }
 
     private void loadFragment(Fragment fragment) {
