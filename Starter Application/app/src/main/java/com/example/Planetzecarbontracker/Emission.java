@@ -86,7 +86,7 @@ public class Emission {
                     return 142;
                 }
 
-                return 192 * value;
+                return 192;
         }
 
         return 0;
