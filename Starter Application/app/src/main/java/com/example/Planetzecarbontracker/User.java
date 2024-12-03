@@ -15,6 +15,9 @@ public class User {
     private boolean firstTime;
     private List<Double> totalEmissionsByCategory;
     private EcoTracker ecoTracker;
+
+    private HabitTracker habitTracker;
+
     public User() {}
 
     public User(String uid, String name, String email, boolean firstTime) {
@@ -23,7 +26,8 @@ public class User {
         this.email = email;
         this.firstTime = firstTime;
         this.totalEmissionsByCategory = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0);
-        this.ecoTracker = new EcoTracker(new ArrayList<>(), "test");
+        this.ecoTracker = new EcoTracker(new ArrayList<>());
+        this.habitTracker = new HabitTracker();
     }
 
     // Getters and setters
@@ -51,5 +55,13 @@ public class User {
             total += emission.getEmission();
         }
         return total;
+    }
+
+    public HabitTracker getHabitTracker() {
+        return habitTracker;
+    }
+
+    public void setHabitTracker(HabitTracker habitTracker) {
+        this.habitTracker = habitTracker;
     }
 }

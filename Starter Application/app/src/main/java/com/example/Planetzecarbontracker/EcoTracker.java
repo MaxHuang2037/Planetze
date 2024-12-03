@@ -10,8 +10,6 @@ import java.util.List;
 
 public class EcoTracker {
 
-    private String test;
-
     private List<Emission> emissions = new ArrayList<>();
     private final String[] categories = {
             "Transportation Activities",
@@ -22,9 +20,8 @@ public class EcoTracker {
 
     public EcoTracker() {}
 
-    public EcoTracker(List<Emission> emissions, String test) {
+    public EcoTracker(List<Emission> emissions) {
         this.emissions = emissions;
-        this.test = test;
     }
 
     public void addEmission(Emission emission) {
@@ -41,14 +38,6 @@ public class EcoTracker {
 
     public void setEmissions (List<Emission> emissions) {
         this.emissions = emissions;
-    }
-
-    public String getTest() {
-        return test;
-    }
-
-    public void setTest(String test) {
-        this.test = test;
     }
 
     /*

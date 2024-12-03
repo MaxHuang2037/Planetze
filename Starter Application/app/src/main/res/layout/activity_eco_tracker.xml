@@ -89,6 +89,20 @@
         android:padding="16dp" />
 
     <Button
+        android:id="@+id/return_to_dashboard"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/primary_accent"
+        android:lineSpacingExtra="10sp"
+        android:text="Back"
+        android:textAlignment="center"
+        android:textSize="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/penguin_image"/>
+
+    <Button
         android:id="@+id/view_activities_button"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -98,24 +112,22 @@
         android:textAlignment="center"
         android:textSize="15dp"
         android:layout_marginBottom="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_habits_button"
+        app:layout_constraintStart_toEndOf="@id/return_to_dashboard"
         app:layout_constraintBottom_toTopOf="@id/penguin_image"/>
 
     <Button
-        android:id="@+id/return_to_dashboard"
-        android:layout_width="100dp"
+        android:id="@+id/view_habits_button"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:backgroundTint="@color/primary_accent"
         android:lineSpacingExtra="10sp"
-        android:text="Back"
+        android:text="@string/habits"
         android:textAlignment="center"
         android:textSize="15dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/penguin_image"/>
 
     <ImageView
