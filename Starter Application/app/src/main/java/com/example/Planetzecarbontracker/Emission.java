@@ -6,7 +6,6 @@ public class Emission {
 
     private int category_key;
     private int question_key;
-//    private String response;
     private int value;
     private Date date;
     private final String[] questions = {

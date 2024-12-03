@@ -43,6 +43,9 @@ public class User {
 
     public List<Double> getTotalEmissionsByCategory(){ return totalEmissionsByCategory;}
     public EcoTracker getEcoTracker () {
+        if (ecoTracker == null) {
+            ecoTracker = new EcoTracker();
+        }
         return ecoTracker;
     }
     public double calculateTotalEmissionsByDateRange(List<Emission> emissions){
