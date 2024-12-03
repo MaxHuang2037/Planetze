@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,7 +57,6 @@ public class DashboardFragment extends Fragment {
                             welcome_message.setText("Welcome " + user.getName());
                         }
                     }
-//                Log.d(TAG, "Value is: " + value);
                 }
 
                 @Override

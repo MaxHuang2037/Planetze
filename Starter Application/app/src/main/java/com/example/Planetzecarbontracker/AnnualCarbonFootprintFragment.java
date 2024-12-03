@@ -249,10 +249,6 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         return transportationEmissions;
     }
     private double calculateHousingEmission(){
-        // FORMULA
-        // FOR Y: houseType * 12 + homeSize * 4 + numPeople
-        // FOR X: i * 5 + i
-
         int emmisions = 0;
 
         // for "other" type of home, calculations are the same as a townhouse.

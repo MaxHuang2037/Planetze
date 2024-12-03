@@ -22,11 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class AnnualFootPrint extends Fragment {
-    private double transportationEmissions;
-    private double foodEmissions;
-    private double housingEmissions;
-    private double consumptionEmissions;
-
     private TextView transportationTextView;
     private TextView foodTextView;
     private TextView housingTextView;

@@ -21,7 +21,6 @@ public class Emission {
             "Buy New Clothes",
             "Buy Electronics", "Energy Bills (Electricity)", "Energy Bills (Gas)",
             "Energy Bills (Water)"
-
     };
 
     public Emission() {};

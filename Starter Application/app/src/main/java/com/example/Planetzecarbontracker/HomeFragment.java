@@ -34,7 +34,6 @@ public class HomeFragment extends Fragment {
         Button loginButton = view.findViewById(R.id.loginButton);
         Button signupButton = view.findViewById(R.id.signupButton);
 
-        // for testing
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 

@@ -186,7 +186,7 @@ public class EcoGaugeFragement extends Fragment{
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
+
             }
         });
 
