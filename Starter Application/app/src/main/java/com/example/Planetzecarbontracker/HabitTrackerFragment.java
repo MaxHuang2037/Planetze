@@ -107,13 +107,13 @@ public class HabitTrackerFragment extends Fragment {
         filter_intensity = view.findViewById(R.id.impact_spinner);
         search_habit = view.findViewById(R.id.search_habit);
 
-        ArrayAdapter<String> intensityAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
-                new String[]{"Intensity (default, no filter)", "Most intense", "Least intense"});
+        ArrayAdapter<String> intensityAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_layout,
+                new String[]{"Intensity ", "Most intense", "Least intense"});
         intensityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filter_intensity.setAdapter(intensityAdapter);
 
-        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
-                new String[]{"Category (default, no filter)", "Transportation", "Food", "Shopping", "Energy"});
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_layout,
+                new String[]{"Category", "Transportation", "Food", "Shopping", "Energy"});
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filter_category.setAdapter(categoryAdapter);
 

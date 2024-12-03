@@ -125,6 +125,7 @@
         android:textColor="@color/black"
         android:padding="8dp"
         android:text="Recommended habit"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/select_habit_wrap"
         app:layout_constraintStart_toStartOf="parent"/>
 
