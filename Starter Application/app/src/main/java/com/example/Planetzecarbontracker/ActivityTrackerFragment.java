@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,6 +51,8 @@ public class ActivityTrackerFragment extends Fragment {
     private DatabaseReference userRef;
     private User user;
     private Date tracking_date = new Date();
+    private LinearLayout activities_container;
+    private TextView daily_emission;
     private int selected_index = 0;
     private final String[][] actions = {
             {"Drive personal vehicle", "Take public transportation", "Cycling or walking", "Flight"},
@@ -94,6 +98,8 @@ public class ActivityTrackerFragment extends Fragment {
         activity_quantity = view.findViewById(R.id.activity_quantity);
         submit_activity = view.findViewById(R.id.submit_activity);
         date_picker = view.findViewById(R.id.date_picker);
+        activities_container = view.findViewById(R.id.activities_container);
+        daily_emission = view.findViewById(R.id.emissionsValue);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -109,6 +115,7 @@ public class ActivityTrackerFragment extends Fragment {
                         User u = snapshot.getValue(User.class);
                         if(u.getId().equals(UID)){
                             user = u;
+                            loadActivities();
                         }
                     }
                 }
@@ -122,42 +129,32 @@ public class ActivityTrackerFragment extends Fragment {
             loadFragment(new HomeFragment());
         }
 
-        // Create a Calendar instance to manage the date
         Calendar calendar = Calendar.getInstance();
         date_picker.setText(String.format("%d/%d/%d", calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR)));
 
-        // Set up the EditText click listener to open the DatePickerDialog
         date_picker.setOnClickListener(v -> {
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-            // Show the DatePickerDialog
             new DatePickerDialog(getContext(), (picker, selectedYear, selectedMonth, selectedDay) -> {
-                // Update the Calendar instance with the selected date
                 calendar.set(selectedYear, selectedMonth, selectedDay);
 
-                // Convert Calendar to Date object
                 tracking_date = calendar.getTime();
-
-                // Format the selected date and set it in the EditText
                 String dateString = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
                 date_picker.setText(dateString);
-                // You can perform additional actions with the Date object here
+
+                loadActivities();
             }, year, month, day).show();
         });
 
         activity_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Get the selected index
-                int selectedIndex = position;
+                selected_index = position;
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Handle case when no item is selected
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +197,85 @@ public class ActivityTrackerFragment extends Fragment {
 
     public void loadActivities() {
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(tracking_date);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        double total_emission = 0;
+
+        activities_container.removeAllViews();
+
+        List<Emission> activities = user.getEcoTracker().getEmissionsByDate(year, month, day);
+
+        for (int i = 0; i < activities.size(); i++) {
+
+            Emission emission = activities.get(i);
+
+            total_emission += emission.getEmission();
+
+            LinearLayout rowLayout = new LinearLayout(getContext());
+            rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+            rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            rowLayout.setGravity(Gravity.CENTER_VERTICAL);
+
+            ImageButton deleteButton = new ImageButton(getContext());
+            deleteButton.setImageResource(android.R.drawable.ic_delete);
+            LinearLayout.LayoutParams deleteButtonParams = new LinearLayout.LayoutParams(
+                    (int) getResources().getDisplayMetrics().density * 24,
+                    (int) getResources().getDisplayMetrics().density * 24
+            );
+            deleteButton.setLayoutParams(deleteButtonParams);
+            deleteButtonParams.rightMargin = (int) getResources().getDisplayMetrics().density * 8;
+            deleteButton.setBackgroundColor(Color.TRANSPARENT);
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    user.getEcoTracker().removeEmission(emission);
+
+                    String UID = mAuth.getUid();
+                    userRef.child(UID).child("ecoTracker").setValue(user.getEcoTracker());
+
+                    Toast.makeText(getContext(), "Emission Removed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            rowLayout.addView(deleteButton);
+
+            TextView activityName = new TextView(getContext());
+            activityName.setText(activities.get(i).getQuestion());
+            activityName.setLayoutParams(new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+            activityName.setTextSize(16);
+            rowLayout.addView(activityName);
+
+            TextView carbonEmission = new TextView(getContext());
+            carbonEmission.setText(String.format("%s kg C02", activities.get(i).getEmission())); // e.g., 5 kg CO2
+            carbonEmission.setLayoutParams(new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+            carbonEmission.setTextSize(16);
+            carbonEmission.setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
+            rowLayout.addView(carbonEmission);
+
+            activities_container.addView(rowLayout);
+        }
+
+        LinearLayout finalRow = new LinearLayout(getContext());
+        finalRow.setOrientation(LinearLayout.HORIZONTAL);
+        finalRow.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
+        daily_emission.setText(String.format("Daily emissions: %s kg C02", total_emission));
+
+        activities_container.addView(finalRow);
     }
 
     public void loadQuestion(int category, int question) {
@@ -227,7 +303,6 @@ public class ActivityTrackerFragment extends Fragment {
                     Emission new_activity = new Emission(category, getDropdownQuestionIndex(getQuestionIndex(category, question), selected_index), value, tracking_date);
                     user.getEcoTracker().addEmission(new_activity);
 
-                    userRef = db.getReference("users");
                     String UID = mAuth.getUid();
                     userRef.child(UID).child("ecoTracker").setValue(user.getEcoTracker());
 
