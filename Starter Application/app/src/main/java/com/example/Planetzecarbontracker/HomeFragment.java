@@ -34,7 +34,6 @@ public class HomeFragment extends Fragment {
         Button loginButton = view.findViewById(R.id.loginButton);
         Button signupButton = view.findViewById(R.id.signupButton);
 
-        // for testing
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -46,6 +45,10 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
+                    if(user == null){
+                        mAuth.signOut();
+                        return;
+                    }
                     Toast.makeText(getContext(), "Welcome, " + user.getName(), Toast.LENGTH_SHORT).show();
                     if(user.getFirstTime()){
                         loadFragment(new AnnualCarbonFootprintFragment());
@@ -65,7 +68,7 @@ public class HomeFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new LogInFragment());
+                loadFragment(new LogInView());
             }
         });
 

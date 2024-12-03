@@ -15,6 +15,9 @@ public class User {
     private boolean firstTime;
     private List<Double> totalEmissionsByCategory;
     private EcoTracker ecoTracker;
+
+    private HabitTracker habitTracker;
+
     public User() {}
 
     public User(String uid, String name, String email, boolean firstTime) {
@@ -23,7 +26,8 @@ public class User {
         this.email = email;
         this.firstTime = firstTime;
         this.totalEmissionsByCategory = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0);
-        this.ecoTracker = new EcoTracker(new ArrayList<>(), "test");
+        this.ecoTracker = new EcoTracker(new ArrayList<>());
+        this.habitTracker = new HabitTracker();
     }
 
     // Getters and setters
@@ -36,20 +40,27 @@ public class User {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public void setTotalEmissionsByCategory(List<Double> totalEmissions) {this.totalEmissionsByCategory = totalEmissions;}
-    public void addToTotalEmissions(int transportationE, int foodE, int housingE, int consumptionE, int totalE){
 
-    }public List<Double> getTotalEmissionsByCategory(){ return totalEmissionsByCategory;}
+    public List<Double> getTotalEmissionsByCategory(){ return totalEmissionsByCategory;}
     public EcoTracker getEcoTracker () {
+        if (ecoTracker == null) {
+            ecoTracker = new EcoTracker();
+        }
         return ecoTracker;
-    }
-    public void setEcoTracker (EcoTracker ecoTracker) {
-        this.ecoTracker = ecoTracker;
     }
     public double calculateTotalEmissionsByDateRange(List<Emission> emissions){
         double total = 0;
         for(Emission emission : emissions){
             total += emission.getEmission();
         }
-        return total;
+        return ((double) Math.round(total * 100) / 100);
+    }
+
+    public HabitTracker getHabitTracker() {
+        return habitTracker;
+    }
+
+    public void setHabitTracker(HabitTracker habitTracker) {
+        this.habitTracker = habitTracker;
     }
 }

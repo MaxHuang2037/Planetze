@@ -273,7 +273,7 @@ public class ActivityTrackerFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
 
-        daily_emission.setText(String.format("Daily emissions: %s kg C02", total_emission));
+        daily_emission.setText(String.format("Daily emissions: %s kg C02", ((double) Math.round(total_emission * 100) / 100)));
 
         activities_container.addView(finalRow);
     }
@@ -317,6 +317,7 @@ public class ActivityTrackerFragment extends Fragment {
         select_category_wrap.setVisibility(View.GONE);
         add_activity_wrap.setVisibility(View.VISIBLE);
         question_buttons_wrap.setVisibility(View.VISIBLE);
+        activities_container.setVisibility(View.INVISIBLE);
 
         for (int i = 0; i < 4; i++) {
             View view = question_buttons_wrap.getChildAt(i);

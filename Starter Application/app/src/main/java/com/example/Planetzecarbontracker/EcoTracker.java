@@ -10,8 +10,6 @@ import java.util.List;
 
 public class EcoTracker {
 
-    private String test;
-
     private List<Emission> emissions = new ArrayList<>();
     private final String[] categories = {
             "Transportation Activities",
@@ -22,9 +20,8 @@ public class EcoTracker {
 
     public EcoTracker() {}
 
-    public EcoTracker(List<Emission> emissions, String test) {
+    public EcoTracker(List<Emission> emissions) {
         this.emissions = emissions;
-        this.test = test;
     }
 
     public void addEmission(Emission emission) {
@@ -43,14 +40,6 @@ public class EcoTracker {
         this.emissions = emissions;
     }
 
-    public String getTest() {
-        return test;
-    }
-
-    public void setTest(String test) {
-        this.test = test;
-    }
-
     /*
 
         get total emissions based on category enum
@@ -67,7 +56,7 @@ public class EcoTracker {
         for (int i = 0; i < emissions.size(); i++) {
             Emission emission = emissions.get(i);
 
-            total_emission[emission.getCategory()] += emission.getEmission();
+            total_emission[emission.getCategory()] += ((double) Math.round(emission.getEmission() * 100) / 100);
         }
 
         return total_emission;

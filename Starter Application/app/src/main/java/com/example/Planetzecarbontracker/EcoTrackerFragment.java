@@ -1,6 +1,7 @@
 package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,14 +111,14 @@ public class EcoTrackerFragment extends Fragment {
             ));
 
             TextView activityName = new TextView(getContext());
-            activityName.setText(activities.get(i).getQuestion()); // e.g., Running, Cycling
+            activityName.setText(activities.get(i).getQuestion());
             activityName.setLayoutParams(new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             activityName.setTextSize(16);
             rowLayout.addView(activityName);
 
             TextView carbonEmission = new TextView(getContext());
-            carbonEmission.setText(String.format("%s kg C02", activities.get(i).getEmission())); // e.g., 5 kg CO2
+            carbonEmission.setText(String.format("%s kg C02", activities.get(i).getEmission()));
             carbonEmission.setLayoutParams(new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             carbonEmission.setTextSize(16);
@@ -158,7 +159,7 @@ public class EcoTrackerFragment extends Fragment {
             total_emission += activity.getEmission();
         }
 
-        daily_emission.setText(String.format("%s kg C02", total_emission));
+        daily_emission.setText(String.format("%s kg C02", ((double) Math.round(total_emission * 100) / 100)));
 
         activities_container.addView(finalRow);
     }
