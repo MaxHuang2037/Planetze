@@ -44,6 +44,9 @@ public class User {
 
     }public List<Double> getTotalEmissionsByCategory(){ return totalEmissionsByCategory;}
     public EcoTracker getEcoTracker () {
+        if (ecoTracker == null) {
+            ecoTracker = new EcoTracker();
+        }
         return ecoTracker;
     }
     public void setEcoTracker (EcoTracker ecoTracker) {
