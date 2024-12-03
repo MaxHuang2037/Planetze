@@ -365,10 +365,10 @@ public class AnnualCarbonFootprintFragment extends Fragment {
     }
 
     private void navigateToResults() {
-        double transportationE = calculateTransportationEmission();
-        double foodE = calculateFoodEmissions();
-        double housingE = calculateHousingEmission();
-        double consumptionE = calculateConsumptionEmissions();
+        double transportationE = ((double) Math.round(calculateTransportationEmission() * 100) / 100);
+        double foodE = ((double) Math.round(calculateFoodEmissions() * 100) / 100);
+        double housingE = ((double) Math.round(calculateHousingEmission() * 100) / 100);
+        double consumptionE = ((double) Math.round(calculateConsumptionEmissions() * 100) / 100);
 
         double totalC02 = transportationE + foodE + housingE + consumptionE;
 
@@ -428,7 +428,7 @@ public class AnnualCarbonFootprintFragment extends Fragment {
         userRef.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-//         Create and Navigate to Results Fragment
+//          Create and Navigate to Results Fragment
                 FormulaAnswersRecorderActivity resultsFragment = new FormulaAnswersRecorderActivity();
                 resultsFragment.setArguments(bundle);
 

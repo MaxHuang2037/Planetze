@@ -47,7 +47,7 @@ public class EmailVerificationReminderActivity extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new SignUpFragment());
+                loadFragment(new HomeFragment());
             }
         });
         return view;

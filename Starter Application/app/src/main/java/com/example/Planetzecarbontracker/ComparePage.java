@@ -223,19 +223,13 @@ public class ComparePage extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment countrySelectFragment = new CountrySelect();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, countrySelectFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                loadFragment(new CountrySelect());
             }
         });
-        // Set up main button to navigate back to main page (assuming main page is another fragment called MainPage)
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                loadFragment(new DashboardFragment());
             }
         });
 
@@ -254,7 +248,7 @@ public class ComparePage extends Fragment {
         String comparisonResult;
         double difference = userFootprint - selectedCountryFootprint;
         double percentageDifference = (difference / selectedCountryFootprint) * 100;
-        String percentageDifferenceFormatted = String.format("%.2f", Math.abs(percentageDifference));
+        String percentageDifferenceFormatted = String.format("%.2f", Math.abs(((double) Math.round(percentageDifference * 100) / 100)));
 
         if (userFootprint < selectedCountryFootprint) {
             comparisonResult = "Your carbon footprint is below the average of " + selectedCountry + " (" + selectedCountryFootprint + " tons CO2e per year). " +
@@ -266,5 +260,12 @@ public class ComparePage extends Fragment {
             comparisonResult = "Your carbon footprint is equal to the average of " + selectedCountry + " (" + selectedCountryFootprint + " tons CO2e per year).";
         }
         comparisonResultTextView.setText(comparisonResult);
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

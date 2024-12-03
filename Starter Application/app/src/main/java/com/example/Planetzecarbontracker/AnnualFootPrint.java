@@ -66,18 +66,12 @@ public class AnnualFootPrint extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment countrySelectFragment = new CountrySelect();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, countrySelectFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                loadFragment(new CountrySelect());
             }
         });
 
         return view;
     }
-
-
 
     private void displayResults(List<Double> totalEmissionsByCategory) {
         transportationTextView.setText("Transportation: " + totalEmissionsByCategory.get(0) + " kg CO2e");
@@ -86,6 +80,13 @@ public class AnnualFootPrint extends Fragment {
         consumptionTextView.setText("Consumption: " + totalEmissionsByCategory.get(3) + " kg CO2e");
 
         totalTextView.setText("Total: " + totalEmissionsByCategory.get(4) / 1000 + " tons of CO2e per year");
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 }

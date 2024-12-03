@@ -181,7 +181,7 @@ public class EcoGaugeFragement extends Fragment{
                 emissionsBreakdown.notifyDataSetChanged();
                 emissionsBreakdown.invalidate();
 
-                totalEmissions.setText("You’ve emitted " + ((double) Math.round(emissions * 100) / 100) + " kg CO2e " + t);
+                totalEmissions.setText("You’ve emitted " + emissions + " kg CO2e " + t);
             }
 
             @Override

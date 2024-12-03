@@ -46,6 +46,10 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
+                    if(user == null){
+                        mAuth.signOut();
+                        return;
+                    }
                     Toast.makeText(getContext(), "Welcome, " + user.getName(), Toast.LENGTH_SHORT).show();
                     if(user.getFirstTime()){
                         loadFragment(new AnnualCarbonFootprintFragment());
