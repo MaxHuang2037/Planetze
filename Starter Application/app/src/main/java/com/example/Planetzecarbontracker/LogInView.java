@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class LogInView extends Fragment {
     private EditText email, password;
-    private Button loginButton;
+    private Button loginButton, backButton;
     private TextView signUpRedirect, forgotPasswordButton;
 
     private LoginPresenter presenter;
@@ -32,6 +32,7 @@ public class LogInView extends Fragment {
         loginButton = view.findViewById(R.id.logInButton);
         signUpRedirect = view.findViewById(R.id.signUpRedirect);
         forgotPasswordButton = view.findViewById(R.id.forgotPasswordButton);
+        backButton = view.findViewById(R.id.backButton);
 
         // Initialize the Presenter
         presenter = new LoginPresenter(this, new LoginModel());
@@ -44,6 +45,7 @@ public class LogInView extends Fragment {
 
         signUpRedirect.setOnClickListener(v -> loadFragment(new SignUpFragment()));
         forgotPasswordButton.setOnClickListener(v -> loadFragment(new ForgotPasswordActivity()));
+        backButton.setOnClickListener(v -> loadFragment(new HomeFragment()));
 
         return view;
     }
