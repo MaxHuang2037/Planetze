@@ -1,7 +1,6 @@
 package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ public class EcoTrackerFragment extends Fragment {
 
     private Button open_tracker;
     private Button back_button;
+    private Button open_habits;
     private TextView daily_emission;
     private LinearLayout activities_container;
     private FirebaseAuth mAuth;
@@ -45,6 +45,7 @@ public class EcoTrackerFragment extends Fragment {
         daily_emission = view.findViewById(R.id.emissionsValue);
         back_button = view.findViewById(R.id.return_to_dashboard);
         open_tracker = view.findViewById(R.id.view_activities_button);
+        open_habits = view.findViewById(R.id.view_habits_button);
 
         activities_container = view.findViewById(R.id.activities_container);
 
@@ -90,6 +91,13 @@ public class EcoTrackerFragment extends Fragment {
             }
         });
 
+        open_habits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new HabitTrackerFragment());
+            }
+        });
+
         return view;
     }
 
@@ -111,14 +119,14 @@ public class EcoTrackerFragment extends Fragment {
             ));
 
             TextView activityName = new TextView(getContext());
-            activityName.setText(activities.get(i).getQuestion());
+            activityName.setText(activities.get(i).getQuestion()); // e.g., Running, Cycling
             activityName.setLayoutParams(new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             activityName.setTextSize(16);
             rowLayout.addView(activityName);
 
             TextView carbonEmission = new TextView(getContext());
-            carbonEmission.setText(String.format("%s kg C02", activities.get(i).getEmission()));
+            carbonEmission.setText(String.format("%.2f kg C02", activities.get(i).getEmission())); // e.g., 5 kg CO2
             carbonEmission.setLayoutParams(new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             carbonEmission.setTextSize(16);
@@ -159,7 +167,7 @@ public class EcoTrackerFragment extends Fragment {
             total_emission += activity.getEmission();
         }
 
-        daily_emission.setText(String.format("%s kg C02", ((double) Math.round(total_emission * 100) / 100)));
+        daily_emission.setText(String.format("%.2f kg C02", total_emission));
 
         activities_container.addView(finalRow);
     }

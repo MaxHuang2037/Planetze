@@ -25,6 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +47,7 @@ public class ActivityTrackerFragment extends Fragment {
     private EditText activity_quantity;
     private EditText date_picker;
     private Button submit_activity;
+    private Button cancel_button;
     private Spinner activity_dropdown;
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
@@ -100,6 +103,7 @@ public class ActivityTrackerFragment extends Fragment {
         date_picker = view.findViewById(R.id.date_picker);
         activities_container = view.findViewById(R.id.activities_container);
         daily_emission = view.findViewById(R.id.emissionsValue);
+        cancel_button = view.findViewById(R.id.cancel_activity);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -192,6 +196,13 @@ public class ActivityTrackerFragment extends Fragment {
             }
         });
 
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new ActivityTrackerFragment());
+            }
+        });
+
         return view;
     }
 
@@ -256,7 +267,7 @@ public class ActivityTrackerFragment extends Fragment {
             rowLayout.addView(activityName);
 
             TextView carbonEmission = new TextView(getContext());
-            carbonEmission.setText(String.format("%s kg C02", activities.get(i).getEmission())); // e.g., 5 kg CO2
+            carbonEmission.setText(String.format("%.2f kg C02", activities.get(i).getEmission()));
             carbonEmission.setLayoutParams(new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             carbonEmission.setTextSize(16);
@@ -273,7 +284,7 @@ public class ActivityTrackerFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
 
-        daily_emission.setText(String.format("Daily emissions: %s kg C02", ((double) Math.round(total_emission * 100) / 100)));
+        daily_emission.setText(String.format("Daily emissions: %.2f kgs C02", total_emission));
 
         activities_container.addView(finalRow);
     }
@@ -308,6 +319,7 @@ public class ActivityTrackerFragment extends Fragment {
 
                     Toast.makeText(getContext(), "New activity logged.",
                             Toast.LENGTH_SHORT).show();
+                    loadFragment(new ActivityTrackerFragment());
                 }
             }
         });
@@ -317,7 +329,8 @@ public class ActivityTrackerFragment extends Fragment {
         select_category_wrap.setVisibility(View.GONE);
         add_activity_wrap.setVisibility(View.VISIBLE);
         question_buttons_wrap.setVisibility(View.VISIBLE);
-        activities_container.setVisibility(View.INVISIBLE);
+        activities_container.setVisibility(View.GONE);
+        daily_emission.setVisibility(View.GONE);
 
         for (int i = 0; i < 4; i++) {
             View view = question_buttons_wrap.getChildAt(i);
