@@ -20,7 +20,6 @@ public class Emission {
             "Buy New Clothes",
             "Buy Electronics", "Energy Bills (Electricity)", "Energy Bills (Gas)",
             "Energy Bills (Water)"
-
     };
 
     public Emission() {};
@@ -34,41 +33,57 @@ public class Emission {
     }
 
     public double getEmission() {
+        double tempValue = 0;
 
         //based on index of questions
         switch (question_key) {
             case 0:
-                return value * 0.24;
+                tempValue = value * 0.24;
+                break;
             case 1:
-                return value * 0.27;
+                tempValue = value * 0.27;
+                break;
             case 2:
-                return value * 0.16;
+                tempValue = value * 0.16;
+                break;
             case 3:
-                return value * 0.05;
+                tempValue = value * 0.05;
+                break;
             case 4:
             case 5:
             case 6:
-                return value * 0.72; // assume 246 kg per hour divided by 365 days
+                tempValue = value * 0.72; // assume 246 kg per hour divided by 365 days
+                break;
             case 7:
-                return 0;
+                tempValue = 0;
+                break;
             case 8:
-                return value * 225;
+                tempValue = value * 225;
+                break;
             case 9:
-                return value * 825; // assume 225 and 825 are values for each flight
+                tempValue = value * 825; // assume 225 and 825 are values for each flight
+                break;
             case 10:
-                return value * 6.85;
+                tempValue = value * 6.85;
+                break;
             case 11:
-                return value * 3.97;
+                tempValue = value * 3.97;
+                break;
             case 12:
-                return value * 2.6;
+                tempValue = value * 2.6;
+                break;
             case 13:
-                return value * 2.19; // assume daily consumption divided by 365 days
+                tempValue = value * 2.19; // assume daily consumption divided by 365 days
+                break;
             case 14:
-                return value * 2.74; // assume vegetarian diet
+                tempValue = value * 2.74; // assume vegetarian diet
+                break;
             case 15:
-                return value * 5; // assume clothing item is 5kg per item
+                tempValue = value * 5; // assume clothing item is 5kg per item
+                break;
             case 16:
-                return value * 300; // assume each electronic device is 300kg
+                tempValue = value * 300; // assume each electronic device is 300kg
+                break;
             case 17:
             case 18:
             case 19:
@@ -85,10 +100,11 @@ public class Emission {
                     return 142;
                 }
 
-                return 192;
+                tempValue = 192;
+                break;
         }
 
-        return 0;
+        return ((double) Math.round(tempValue * 100) / 100);
     }
 
     public int getCategory () {

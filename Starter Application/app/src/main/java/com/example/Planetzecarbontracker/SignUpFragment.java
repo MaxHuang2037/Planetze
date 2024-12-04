@@ -38,9 +38,8 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sign_up_fragment, container, false);
-        // Check if user is signed in (non-null) and update UI accordingly.
+
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         name = view.findViewById((R.id.editTextTextName));
         email = view.findViewById(R.id.editTextTextEmailAddress);
@@ -49,10 +48,6 @@ public class SignUpFragment extends Fragment {
         signUpButton = view.findViewById(R.id.signUpButton);
         logInRedirect = view.findViewById(R.id.logInRedirect);
         backButton = view.findViewById(R.id.backButton);
-
-//        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
-
-        // Set up the spinner with categories
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +59,7 @@ public class SignUpFragment extends Fragment {
         logInRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new LogInFragment());
+                loadFragment(new LogInView());
             }
         });
 
@@ -96,13 +91,11 @@ public class SignUpFragment extends Fragment {
         createAccount(n, e, p);
     }
     private void createAccount(String name, String email, String password) {
-        // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             // adding to the database
                             db = FirebaseDatabase.getInstance();
@@ -125,7 +118,6 @@ public class SignUpFragment extends Fragment {
                         }
                     }
                 });
-        // [END create_user_with_email]
     }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

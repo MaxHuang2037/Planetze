@@ -1,6 +1,5 @@
 package com.example.Planetzecarbontracker;
 
-// EmailVerificationReminderActivity.java
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -47,7 +46,7 @@ public class EmailVerificationReminderActivity extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new SignUpFragment());
+                loadFragment(new HomeFragment());
             }
         });
         return view;
