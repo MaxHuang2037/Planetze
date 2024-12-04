@@ -173,6 +173,7 @@
             android:layout_height="wrap_content"
             android:text="Start"
             android:textColor="@android:color/white"
+            android:backgroundTint="@color/primary_accent"
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"
             android:minHeight="32dp"

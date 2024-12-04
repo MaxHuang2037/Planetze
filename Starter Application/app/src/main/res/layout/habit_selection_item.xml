@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start"
+            android:backgroundTint="@color/primary_accent"
             android:textColor="@android:color/white"
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"

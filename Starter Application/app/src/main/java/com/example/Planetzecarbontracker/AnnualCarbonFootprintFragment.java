@@ -496,7 +496,7 @@ public class AnnualCarbonFootprintFragment extends Fragment {
             questionNumber += 1;
         }
         radioGroup.clearCheck();
-        questionText.setText(String.format("%,d. %s", questionNumber, questions[questionNumber]));
+        questionText.setText(questions[questionNumber]);
         for(int j = 0; j < 6; j++){
             if(j < answers[questionNumber].length){
                 choices[j].setVisibility(View.VISIBLE);
