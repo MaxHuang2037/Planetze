@@ -126,7 +126,7 @@ public class EcoTrackerFragment extends Fragment {
             rowLayout.addView(activityName);
 
             TextView carbonEmission = new TextView(getContext());
-            carbonEmission.setText(String.format("%s kg C02", activities.get(i).getEmission())); // e.g., 5 kg CO2
+            carbonEmission.setText(String.format("%.2f kg C02", activities.get(i).getEmission())); // e.g., 5 kg CO2
             carbonEmission.setLayoutParams(new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             carbonEmission.setTextSize(16);
@@ -167,7 +167,7 @@ public class EcoTrackerFragment extends Fragment {
             total_emission += activity.getEmission();
         }
 
-        daily_emission.setText(String.format("%s kg C02", total_emission));
+        daily_emission.setText(String.format("%.2f kg C02", total_emission));
 
         activities_container.addView(finalRow);
     }

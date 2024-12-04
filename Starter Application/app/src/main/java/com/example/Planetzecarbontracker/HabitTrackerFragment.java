@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -243,9 +244,14 @@ public class HabitTrackerFragment extends Fragment {
                 userRef.child(UID).child("habitTracker").setValue(user.getHabitTracker());
                 if (habitTracker.getTracking().get(final_recommendation)) {
                     habitToggleButton.setText("Stop Habit");
+                    Toast.makeText(getContext(), "Habit started",
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     habitToggleButton.setText("Start Habit");
+                    Toast.makeText(getContext(), "Habit stopped",
+                            Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }
@@ -298,8 +304,12 @@ public class HabitTrackerFragment extends Fragment {
                     userRef.child(UID).child("habitTracker").setValue(user.getHabitTracker());
                     if (habitTracker.getTracking().get(final_habit_index)) {
                         toggleButton.setText("Stop Habit");
+                        Toast.makeText(getContext(), "Habit started",
+                                Toast.LENGTH_SHORT).show();
                     } else {
                         toggleButton.setText("Start Habit");
+                        Toast.makeText(getContext(), "Habit stopped",
+                                Toast.LENGTH_SHORT).show();
                     }
 
                 });

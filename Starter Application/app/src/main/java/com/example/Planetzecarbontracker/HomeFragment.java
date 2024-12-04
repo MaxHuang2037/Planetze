@@ -1,6 +1,7 @@
 package com.example.Planetzecarbontracker;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class HomeFragment extends Fragment {
 
         if(currentUser != null && currentUser.isEmailVerified()){
             userRef = db.getReference("users").child(mAuth.getUid());
-            userRef.addValueEventListener(new ValueEventListener() {
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment {
                     if(user.getFirstTime()){
                         loadFragment(new AnnualCarbonFootprintFragment());
                     } else {
+                        Log.v("Redirect", "Redreiction to dashboard");
                         loadFragment(new DashboardFragment());
                     }
                 }

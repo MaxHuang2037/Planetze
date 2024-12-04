@@ -125,7 +125,7 @@ public class LogInFragment extends Fragment {
         String UID = mAuth.getCurrentUser().getUid();
         db = FirebaseDatabase.getInstance();
         userRef = db.getReference("users").child(UID);
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
